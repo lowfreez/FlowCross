@@ -1,0 +1,12 @@
+{
+  "name": "FlowCross",
+  "version": "v0.2.0",
+  "description": "An minecraft launcher called FlowCross",
+  "main": "src/main.js",
+  "author": "lowfreez",
+  "license": "ISC",
+  "dependencies": {
+    "minecraft-launcher-core": "^3.18.2",
+    "electron-updater": "^6.7.3"
+  }
+}

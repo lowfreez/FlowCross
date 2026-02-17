@@ -1,0 +1,72 @@
+{
+  "name": "FlowCross",
+  "version": "0.2.0",
+  "description": "An minecraft launcher called FlowCross",
+  "main": "src/main.js",
+  "author": "lowfreez",
+  "license": "ISC",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "dist": "electron-builder"
+  },
+  "dependencies": {
+    "minecraft-launcher-core": "^3.18.2",
+    "electron-updater": "^6.7.3"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.lowfreez.flowcross",
+    "productName": "FlowCross",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "Html/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "src/resources/GameStatsAgent.jar",
+        "to": "GameStatsAgent.jar"
+      },
+      {
+        "from": "src/resources/elevate.exe",
+        "to": "elevate.exe"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "src/assets/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "tar.gz"
+      ],
+      "category": "Game"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

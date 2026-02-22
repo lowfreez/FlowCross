@@ -1,0 +1,102 @@
+{
+  "name": "flowcross",
+  "version": "0.2.1",
+  "isBeta": true,
+  "description": "An minecraft launcher called FlowCross",
+  "main": "src/main.js",
+  "author": "lowfreez",
+  "license": "ISC",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "dist": "electron-builder",
+    "release": "electron-builder --win --x64 --publish always"
+  },
+  "dependencies": {
+    "discord-rpc": "^4.0.1",
+    "electron-updater": "^6.7.3",
+    "minecraft-launcher-core": "^3.18.2",
+    "skinview3d": "^3.4.1",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.lowfreez.flowcross",
+    "productName": "FlowCross",
+    "extraMetadata": {
+      "isBeta": true
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "Html/**/*",
+      "package.json",
+      "Assets/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "src/resources/GameStatsAgent.jar",
+        "to": "GameStatsAgent.jar"
+      },
+      {
+        "from": "src/resources/elevate.exe",
+        "to": "elevate.exe"
+      }
+    ],
+    "fileAssociations": [
+      {
+        "ext": "flow",
+        "name": "FlowCross",
+        "description": "FlowCross Installation File",
+        "icon": "Assets/pkg.ico"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        "tar.gz",
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "Assets/icon.ico"
+    },
+    "linux": {
+      "target": [
+        "tar.gz"
+      ],
+      "category": "Game"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "installerIcon": "Assets/icon.ico",
+      "uninstallerIcon": "Assets/icon.ico",
+      "installerHeaderIcon": "Assets/icon.ico",
+      "deleteAppDataOnUninstall": true,
+      "runAfterFinish": true,
+      "shortcutName": "FlowCross",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "lowfreez",
+      "repo": "flowcross"
+    }
+  }
+}

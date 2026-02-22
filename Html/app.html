@@ -1,0 +1,2302 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowCross</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="pro-theme.css">
+    <link rel="stylesheet" href="update-banner.css">
+
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+
+    <div id="bg-image-overlay"></div>
+
+    <div id="loading-screen" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-logo">▲</div>
+            <div class="loading-title">FlowCross Launcher</div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <div class="loading-status"><span data-i18n="loading">Загрузка</span><span class="loading-dots"></span>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-container"></div>
+
+    <div class="container" id="main-container">
+
+        <div class="title-bar" id="title-bar-element">
+
+            <div class="title-left">
+                <div class="logo" id="launcher-logo" data-version="v0.2.0" onclick="toggleWindowMenu(event)"
+                    style="cursor: pointer; position: relative;">▲</div>
+
+                <div id="titlebar-progress-wrap">
+                    <div id="titlebar-progress-bar"></div>
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="window-controls">
+                    <button class="window-btn minimize-btn" onclick="minimizeWindow()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M6 12H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <div id="window-dropdown-menu"
+                        style="display:none;position:absolute;top:40px;left:70px;background:#151515;border:1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);border-radius:8px;padding:6px;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+                        <div onclick="minimizeToTray()"
+                            style="padding:8px 12px;cursor:pointer;font-size:13px;color:#ccc;border-radius:4px;"
+                            onmouseover="this.style.background='rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05)'"
+                            onmouseout="this.style.background='transparent'" data-i18n="minimize_tray">Свернуть в трей
+                        </div>
+                        <div onclick="window.launcher.windowControl('close')"
+                            style="padding:8px 12px;cursor:pointer;font-size:13px;color:#ef4444;border-radius:4px;"
+                            onmouseover="this.style.background='rgba(239,68,68,0.1)'"
+                            onmouseout="this.style.background='transparent'" data-i18n="exit">Выход</div>
+                    </div>
+                    <button class="fullscreen-btn">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </button>
+                    <button class="close-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 8L8 16M8 8L16 16" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mini-sidebar">
+            <div class="mini-sidebar-nav">
+                <button class="mini-sidebar-btn active" data-page="home" onclick="switchPage('home')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M2 12.2039C2 9.91549 2 8.77128 2.5192 7.82274C3.0384 6.87421 3.98695 6.28551 5.88403 5.10813L7.88403 3.86687C9.88939 2.62229 10.8921 2 12 2C13.1079 2 14.1106 2.62229 16.116 3.86687L18.116 5.10812C20.0131 6.28551 20.9616 6.87421 21.4808 7.82274C22 8.77128 22 9.91549 22 12.2039V13.725C22 17.6258 22 19.5763 20.8284 20.7881C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.7881C2 19.5763 2 17.6258 2 13.725V12.2039Z"
+                            stroke="currentColor" stroke-width="1.5" />
+                        <path d="M15 18H9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <div class="tooltip" data-i18n="home">Главная</div>
+                </button>
+                <button class="mini-sidebar-btn" data-page="accounts" onclick="switchPage('accounts')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="6" r="4" stroke="currentColor" stroke-width="1.5" />
+                        <path
+                            d="M20 17.5C20 19.9853 20 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C16.4183 13 20 15.0147 20 17.5Z"
+                            stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <div class="tooltip" data-i18n="accounts">Аккаунты</div>
+                </button>
+                <button class="mini-sidebar-btn" data-page="versions" onclick="switchPage('versions')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M4.97883 9.68508C2.99294 8.89073 2 8.49355 2 8C2 7.50645 2.99294 7.10927 4.97883 6.31492L7.7873 5.19153C9.77318 4.39718 10.7661 4 12 4C13.2339 4 14.2268 4.39718 16.2127 5.19153L19.0212 6.31492C21.0071 7.10927 22 7.50645 22 8C22 8.49355 21.0071 8.89073 19.0212 9.68508L16.2127 10.8085C14.2268 11.6028 13.2339 12 12 12C10.7661 12 9.77318 11.6028 7.7873 10.8085L4.97883 9.68508Z"
+                            stroke="currentColor" stroke-width="1.5" />
+                        <path
+                            d="M5.76613 10L4.97883 10.3149C2.99294 11.1093 2 11.5065 2 12C2 12.4935 2.99294 12.8907 4.97883 13.6851L7.7873 14.8085C9.77318 15.6028 10.7661 16 12 16C13.2339 16 14.2268 15.6028 16.2127 14.8085L19.0212 13.6851C21.0071 12.8907 22 12.4935 22 12C22 11.5065 21.0071 11.1093 19.0212 10.3149L18.2339 10"
+                            stroke="currentColor" stroke-width="1.5" />
+                        <path
+                            d="M5.76613 14L4.97883 14.3149C2.99294 15.1093 2 15.5065 2 16C2 16.4935 2.99294 16.8907 4.97883 17.6851L7.7873 18.8085C9.77318 19.6028 10.7661 20 12 20C13.2339 20 14.2268 19.6028 16.2127 18.8085L19.0212 17.6851C21.0071 16.8907 22 16.4935 22 16C22 15.5065 21.0071 15.1093 19.0212 14.3149L18.2339 14"
+                            stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <div class="tooltip" data-i18n="versions">Версии</div>
+                </button>
+                <button class="mini-sidebar-btn" data-page="modpacks" onclick="switchPage('modpacks')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21L3 16V8L12 3L21 8V16L12 21Z" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M3 8L12 13L21 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 13V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 8L7.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M12 8L16.5 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <div class="tooltip" data-i18n="modpacks">Сборки</div>
+                </button>
+
+                <button class="mini-sidebar-btn" data-page="mods-browser" onclick="switchPage('mods-browser')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3C7 3 3 7 3 12s4 9 9 9 9-4 9-9-4-9-9-9z" stroke="currentColor"
+                            stroke-width="1.5" />
+                        <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                    <div class="tooltip" data-i18n="mods_browser">Моды</div>
+                </button>
+
+                <button class="mini-sidebar-btn" data-page="settings" onclick="switchPage('settings')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5" />
+                        <path
+                            d="M13.7654 2.15224C13.3978 2 12.9319 2 12 2C11.0681 2 10.6022 2 10.2346 2.15224C9.74457 2.35523 9.35522 2.74458 9.15223 3.23463C9.05957 3.45834 9.0233 3.7185 9.00911 4.09799C8.98826 4.65568 8.70226 5.17189 8.21894 5.45093C7.73564 5.72996 7.14559 5.71954 6.65219 5.45876C6.31645 5.2813 6.07301 5.18262 5.83294 5.15102C5.30704 5.08178 4.77518 5.22429 4.35436 5.5472C4.03874 5.78938 3.80577 6.1929 3.33983 6.99993C2.87389 7.80697 2.64092 8.21048 2.58899 8.60491C2.51976 9.1308 2.66227 9.66266 2.98518 10.0835C3.13256 10.2756 3.3397 10.437 3.66119 10.639C4.1338 10.936 4.43789 11.4419 4.43786 12C4.43783 12.5581 4.13375 13.0639 3.66118 13.3608C3.33965 13.5629 3.13248 13.7244 2.98508 13.9165C2.66217 14.3373 2.51966 14.8691 2.5889 15.395C2.64082 15.7894 2.87379 16.193 3.33973 17C3.80568 17.807 4.03865 18.2106 4.35426 18.4527C4.77508 18.7756 5.30694 18.9181 5.83284 18.8489C6.07289 18.8173 6.31632 18.7186 6.65204 18.5412C7.14547 18.2804 7.73556 18.27 8.2189 18.549C8.70224 18.8281 8.98826 19.3443 9.00911 19.9021C9.02331 20.2815 9.05957 20.5417 9.15223 20.7654C9.35522 21.2554 9.74457 21.6448 10.2346 21.8478C10.6022 22 11.0681 22 12 22C12.9319 22 13.3978 22 13.7654 21.8478C14.2554 21.6448 14.6448 21.2554 14.8477 20.7654C14.9404 20.5417 14.9767 20.2815 14.9909 19.902C15.0117 19.3443 15.2977 18.8281 15.781 18.549C16.2643 18.2699 16.8544 18.2804 17.3479 18.5412C17.6836 18.7186 17.927 18.8172 18.167 18.8488C18.6929 18.9181 19.2248 18.7756 19.6456 18.4527C19.9612 18.2105 20.1942 17.807 20.6601 16.9999C21.1261 16.1929 21.3591 15.7894 21.411 15.395C21.4802 14.8691 21.3377 14.3372 21.0148 13.9164C20.8674 13.7243 20.6602 13.5628 20.3387 13.3608C19.8662 13.0639 19.5621 12.558 19.5621 11.9999C19.5621 11.4418 19.8662 10.9361 20.3387 10.6392C20.6603 10.4371 20.8675 10.2757 21.0149 10.0835C21.3378 9.66273 21.4803 9.13087 21.4111 8.60497C21.3592 8.21055 21.1262 7.80703 20.6602 7C20.1943 6.19297 19.9613 5.78945 19.6457 5.54727C19.2249 5.22436 18.693 5.08185 18.1671 5.15109C17.9271 5.18269 17.6837 5.28136 17.3479 5.4588C16.8545 5.71959 16.2644 5.73002 15.7811 5.45096C15.2977 5.17191 15.0117 4.65566 14.9909 4.09794C14.9767 3.71848 14.9404 3.45833 14.8477 3.23463C14.6448 2.74458 14.2554 2.35523 13.7654 2.15224Z"
+                            stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <div class="tooltip" data-i18n="settings">Настройки</div>
+                </button>
+            </div>
+
+            <div class="mini-sidebar-bottom">
+                <button class="mini-sidebar-btn" onclick="toggleCommandPalette()">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M20 20L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <div class="tooltip" data-i18n="search">Поиск</div>
+                </button>
+
+                <button class="mini-sidebar-btn" data-page="changelog" onclick="switchPage('changelog')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M16 4C18.175 4.01211 19.3529 4.10856 20.1213 4.87694C21 5.75562 21 7.16983 21 9.99826V15.9983C21 18.8267 21 20.2409 20.1213 21.1196C19.2426 21.9983 17.8284 21.9983 15 21.9983H9C6.17157 21.9983 4.75736 21.9983 3.87868 21.1196C3 20.2409 3 18.8267 3 15.9983V9.99826C3 7.16983 3 5.75562 3.87868 4.87694C4.64706 4.10856 5.82497 4.01211 8 4"
+                            stroke="currentColor" stroke-width="1.5" />
+                        <path d="M9 13.4L10.7143 15L15 11" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                            d="M8 3.5C8 2.67157 8.67157 2 9.5 2H14.5C15.3284 2 16 2.67157 16 3.5V4.5C16 5.32843 15.3284 6 14.5 6H9.5C8.67157 6 8 5.32843 8 4.5V3.5Z"
+                            stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <div class="tooltip" data-i18n="changelog">Изменения</div>
+                </button>
+                <button class="mini-sidebar-btn" data-page="logs" onclick="switchPage('logs')">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M15.3929 4.05365L14.8912 4.61112L14.8912 4.61112L15.3929 4.05365ZM19.3517 7.61654L18.85 8.17402L18.85 8.17402L19.3517 7.61654ZM21.654 10.1541L20.9689 10.4592L20.9689 10.4592L21.654 10.1541ZM3.17157 20.8284L3.7019 20.2981L3.7019 20.2981L3.17157 20.8284ZM20.8284 20.8284L20.2981 20.2981L20.2981 20.2981L20.8284 20.8284ZM14 21.25H10V22.75H14V21.25ZM2.75 14V10H1.25V14H2.75ZM21.25 13.5629V14H22.75V13.5629H21.25ZM14.8912 4.61112L18.85 8.17402L19.8534 7.05907L15.8947 3.49618L14.8912 4.61112ZM22.75 13.5629C22.75 11.8745 22.7651 10.8055 22.3391 9.84897L20.9689 10.4592C21.2349 11.0565 21.25 11.742 21.25 13.5629H22.75ZM18.85 8.17402C20.2034 9.3921 20.7029 9.86199 20.9689 10.4592L22.3391 9.84897C21.9131 8.89241 21.1084 8.18853 19.8534 7.05907L18.85 8.17402ZM10.0298 2.75C11.6116 2.75 12.2085 2.76158 12.7405 2.96573L13.2779 1.5653C12.4261 1.23842 11.498 1.25 10.0298 1.25V2.75ZM15.8947 3.49618C14.8087 2.51878 14.1297 1.89214 13.2779 1.5653L12.7405 2.96573C13.2727 3.16993 13.7215 3.55836 14.8912 4.61112L15.8947 3.49618ZM10 21.25C8.09318 21.25 6.73851 21.2484 5.71085 21.1102C4.70476 20.975 4.12511 20.7213 3.7019 20.2981L2.64124 21.3588C3.38961 22.1071 4.33855 22.4392 5.51098 22.5969C6.66182 22.7516 8.13558 22.75 10 22.75V21.25ZM1.25 14C1.25 15.8644 1.24841 17.3382 1.40313 18.489C1.56076 19.6614 1.89288 20.6104 2.64124 21.3588L3.7019 20.2981C3.27869 19.8749 3.02502 19.2952 2.88976 18.2892C2.75159 17.2615 2.75 15.9068 2.75 14H1.25ZM14 22.75C15.8644 22.75 17.3382 22.7516 18.489 22.5969C19.6614 22.4392 20.6104 22.1071 21.3588 21.3588L20.2981 20.2981C19.8749 20.7213 19.2952 20.975 18.2892 21.1102C17.2615 21.2484 15.9068 21.25 14 21.25V22.75ZM21.25 14C21.25 15.9068 21.2484 17.2615 21.1102 18.2892C20.975 19.2952 20.7213 19.8749 20.2981 20.2981L21.3588 21.3588C22.1071 20.6104 22.4392 19.6614 22.5969 18.489C22.7516 17.3382 22.75 15.8644 22.75 14H21.25ZM2.75 10C2.75 8.09318 2.75159 6.73851 2.88976 5.71085C3.02502 4.70476 3.27869 4.12511 3.7019 3.7019L2.64124 2.64124C1.89288 3.38961 1.56076 4.33855 1.40313 5.51098C1.24841 6.66182 1.25 8.13558 1.25 10H2.75ZM10.0298 1.25C8.15538 1.25 6.67442 1.24842 5.51887 1.40307C4.34232 1.56054 3.39019 1.8923 2.64124 2.64124L3.7019 3.7019C4.12453 3.27928 4.70596 3.02525 5.71785 2.88982C6.75075 2.75158 8.11311 2.75 10.0298 2.75V1.25Z"
+                            fill="currentColor" />
+                        <path d="M6 14.5H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M6 18H11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M13 2.5V5C13 7.35702 13 8.53553 13.7322 9.26777C14.4645 10 15.643 10 18 10H22"
+                            stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <div class="tooltip" data-i18n="logs">Логи</div>
+                </button>
+            </div>
+        </div>
+
+        <div class="main-wrapper">
+            <div class="welcome-banner" id="welcome-banner" style="display: none;" data-i18n="welcome">Добро пожаловать
+            </div>
+            <div class="content-area">
+
+                <div class="page active" id="page-home">
+                    <div class="main-content">
+                        <div class="left-panel">
+                            <div class="profile-card-main">
+                                <div class="skin-viewer-wrap" id="skin-viewer-wrap">
+                                    <canvas id="skin-canvas"></canvas>
+                                    <div class="skin-viewer-placeholder" id="skin-viewer-placeholder">
+                                        <svg viewBox="0 0 24 24" fill="none" width="32" height="32"
+                                            stroke="rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.2)"
+                                            stroke-width="1.2">
+                                            <path d="M12 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM6 20a6 6 0 0 1 12 0"
+                                                stroke-linecap="round" />
+                                        </svg>
+                                    </div>
+                                    <button class="skin-add-btn" id="create-profile-btn"
+                                        onclick="showModal('create-profile-modal')" title="Создать профиль">
+                                        <svg viewBox="0 0 24 24" fill="none" width="14" height="14"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <path d="M12 5v14m-7-7h14" stroke-linecap="round" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="profile-name-dropdown" id="profile-name-dropdown">
+                                    <span class="profile-name" id="home-profile-name">Player</span>
+                                    <svg viewBox="0 0 24 24" fill="none" width="16" height="16" stroke="currentColor"
+                                        stroke-width="2" class="profile-chevron">
+                                        <polyline points="6 9 12 15 18 9" />
+                                    </svg>
+                                    <div class="profile-dropdown-menu" id="profile-dropdown-menu"></div>
+                                </div>
+
+                                <div class="custom-select-wrapper" style="display:none;">
+                                    <div class="custom-select" id="profile-selector" data-onChange="onProfileChange">
+                                        <div class="custom-select-trigger">
+                                            <span data-i18n="select_profile">Выберите профиль</span>
+                                        </div>
+                                        <div class="custom-options"></div>
+                                    </div>
+                                </div>
+
+                                <select id="version-select" style="display:none;">
+                                    <option value="" data-i18n="select_version">Выберите...</option>
+                                </select>
+                                <select id="modloader-select" style="display:none;">
+                                    <option value="none">Vanilla</option>
+                                    <option value="fabric">Fabric</option>
+                                    <option value="forge">Forge</option>
+                                </select>
+
+                                <div class="quick-access-row">
+                                    <button class="icon-btn tooltip-btn" id="btn-open-launcher" title="Папка Лаунчера"
+                                        data-i18n="folder_launcher" data-i18n-target="title">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M2 11C2 7.70017 2.48154 5.86374 3.75475 4.67135C5.02796 3.47895 6.98801 3.47895 10.5113 3.47895H13.4887C17.012 3.47895 18.972 3.47895 20.2452 4.67135C21.5185 5.86374 22 7.70017 22 11V13C22 16.2998 21.5185 18.1363 20.2452 19.3286C18.972 20.5211 17.012 20.5211 13.4887 20.5211H10.5113C6.98801 20.5211 5.02796 20.5211 3.75475 19.3286C2.48154 18.1363 2 16.2998 2 13V11Z"
+                                                stroke="currentColor" stroke-width="1.5" />
+                                            <path d="M2 10H22" stroke="currentColor" stroke-width="1.5" />
+                                        </svg>
+                                        <span data-i18n="folder_launcher_label">Лаунчер</span>
+                                    </button>
+                                    <button class="icon-btn tooltip-btn" id="btn-open-game" title="Папка Игры"
+                                        data-i18n="folder_game" data-i18n-target="title">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M9.5 14H6.5" stroke="currentColor" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M8 12.5V15.5" stroke="currentColor" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M16.5 15.5C16.5 15.5 16.5 15.5 16.5 15.5" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M14.5 13.5C14.5 13.5 14.5 13.5 14.5 13.5" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path
+                                                d="M2 13.2C2 16.98 2 18.87 3.171 20.045C4.343 21.22 5.968 21.22 9.217 21.22H14.783C18.032 21.22 19.656 21.22 20.828 20.045C22 18.87 22 16.98 22 13.2C22 9.42 22 7.53 20.828 6.355C19.656 5.18 18.032 5.18 14.783 5.18H9.217C5.968 5.18 4.343 5.18 3.171 6.355C2.102 7.427 2.009 9.07 2 12"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                        </svg>
+                                        <span data-i18n="folder_game_label">Игра</span>
+                                    </button>
+                                    <button class="icon-btn tooltip-btn" id="btn-open-mods" title="Папка Модов"
+                                        data-i18n="folder_mods" data-i18n-target="title">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M10 8H6.26257C5.55837 8 5.20627 8 4.90805 8.08153C4.64364 8.15382 4.40226 8.29316 4.22019 8.4784C4.01487 8.68735 3.91136 9.02029 3.70433 9.68623L2.61862 13.1789C2.26126 14.3287 2.08257 14.9036 2.22744 15.3908C2.35339 15.8143 2.65171 16.1666 3.0487 16.3601C3.50532 16.5828 4.10656 16.4862 5.30903 16.2934L7.8596 15.8845C8.94829 15.7099 9.49264 15.6226 10.027 15.8101C10.2372 15.8839 10.437 15.9892 10.6136 16.1213C11.0658 16.457 11.233 16.9949 11.5674 18.0706L11.751 18.6613C11.8392 18.9451 11.8833 19.087 11.9613 19.191C12.1648 19.4623 12.5029 19.6053 12.8398 19.5623C12.969 19.5458 13.0858 19.4682 13.3195 19.3129L19.4851 15.2163C20.6543 14.4394 21.2389 14.051 21.4646 13.5186C21.6606 13.0561 21.5791 12.5229 21.2486 12.131C20.8679 11.6796 20.1983 11.4923 18.859 11.1176L17.7011 10.7937C17.1524 10.6402 16.8781 10.5634 16.6328 10.4288C16.3263 10.2606 16.0594 10.0247 15.8569 9.74312C15.6948 9.51785 15.5898 9.24765 15.3797 8.7072L15.3218 8.55835C14.8967 7.46473 14.6841 6.91792 14.2404 6.55627C13.8475 6.23604 13.3516 6.07722 12.8465 6.10928C12.276 6.14548 11.7779 6.55034 10.7816 7.36006L10 8Z"
+                                                stroke="currentColor" stroke-width="1.5" />
+                                        </svg>
+                                        <span data-i18n="folder_mods_label">Моды</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="launch-section-left">
+                                <div class="split-launch-btn">
+                                    <button class="split-launch-main" id="launch-game-btn"
+                                        data-i18n="play">ИГРАТЬ</button>
+                                    <button class="split-launch-version" id="version-picker-btn">
+                                        <svg viewBox="0 0 24 24" fill="none" width="14" height="14"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <polyline points="6 9 12 15 18 9" />
+                                        </svg>
+                                        <div class="version-picker-menu" id="version-picker-menu"></div>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="right-panel">
+                            <div class="news-banner-container" id="news-banner-container"
+                                style="margin-bottom: 20px; border-radius: 12px; overflow: hidden; position: relative; background: #000; flex: 1; min-height: 0;">
+                                <div id="news-slides"
+                                    style="display: flex; transition: transform 0.5s ease; height: 100%;">
+
+                                </div>
+                                <div class="banner-overlay"
+                                    style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); padding: 20px; pointer-events: none;">
+                                    <div id="banner-title"
+                                        style="color: var(--text-color, #fff); font-size: 18px; font-weight: 700; margin-bottom: 5px; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
+                                        <span data-i18n="news_loading">Загрузка новостей...</span>
+                                    </div>
+                                    <div id="banner-text"
+                                        style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); font-size: 13px; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        Пожалуйста, подождите</div>
+                                </div>
+                                <div class="banner-controls"
+                                    style="position: absolute; bottom: 15px; right: 15px; display: flex; gap: 5px;">
+                                    <button onclick="prevBanner()"
+                                        style="background: rgba(0,0,0,0.5); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.2); color: var(--text-color, #fff); width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">&lt;</button>
+                                    <button onclick="nextBanner()"
+                                        style="background: rgba(0,0,0,0.5); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.2); color: var(--text-color, #fff); width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">&gt;</button>
+                                </div>
+                            </div>
+
+                            <div class="console-section">
+                                <div class="console-header">
+                                    <div class="section-title" data-i18n="console">Консоль</div>
+
+                                    <button class="clear-btn icon-btn" id="clear-console-btn" onclick="clearLogs()"
+                                        title="Очистить" data-i18n="clear" data-i18n-target="title">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M20 5.9C21.933 5.93333 21.933 3.06667 20 3.1H4C2.06667 3.06667 2.06667 5.93333 4 5.9C6.06667 5.93333 6.06667 3.06667 4 3.1M17.4667 9.1L17.0667 17.5333C17.0333 19.3333 17 21.5 14.1667 21.5H9.83333C7 21.5 6.96667 19.3333 6.93333 17.5333L6.53333 9.1C6.53333 7.6 8 7.6 8 9.1M10 13V17M14 13V17"
+                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                        </svg>
+                                    </button>
+                                </div>
+                                <div class="console-output" id="console-output">
+                                    <div style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.3);"
+                                        data-i18n="console_ready">Консоль
+                                        готова...</div>
+                                </div>
+                            </div>
+
+                            <button class="console-collapsed-btn" onclick="switchPage('logs')">
+                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M15.3929 4.05365L14.8912 4.61112L14.8912 4.61112L15.3929 4.05365ZM19.3517 7.61654L18.85 8.17402L18.85 8.17402L19.3517 7.61654ZM21.654 10.1541L20.9689 10.4592L20.9689 10.4592L21.654 10.1541ZM3.17157 20.8284L3.7019 20.2981L3.7019 20.2981L3.17157 20.8284ZM20.8284 20.8284L20.2981 20.2981L20.2981 20.2981L20.8284 20.8284ZM14 21.25H10V22.75H14V21.25ZM2.75 14V10H1.25V14H2.75ZM21.25 13.5629V14H22.75V13.5629H21.25ZM14.8912 4.61112L18.85 8.17402L19.8534 7.05907L15.8947 3.49618L14.8912 4.61112ZM22.75 13.5629C22.75 11.8745 22.7651 10.8055 22.3391 9.84897L20.9689 10.4592C21.2349 11.0565 21.25 11.742 21.25 13.5629H22.75ZM18.85 8.17402C20.2034 9.3921 20.7029 9.86199 20.9689 10.4592L22.3391 9.84897C21.9131 8.89241 21.1084 8.18853 19.8534 7.05907L18.85 8.17402ZM10.0298 2.75C11.6116 2.75 12.2085 2.76158 12.7405 2.96573L13.2779 1.5653C12.4261 1.23842 11.498 1.25 10.0298 1.25V2.75ZM15.8947 3.49618C14.8087 2.51878 14.1297 1.89214 13.2779 1.5653L12.7405 2.96573C13.2727 3.16993 13.7215 3.55836 14.8912 4.61112L15.8947 3.49618ZM10 21.25C8.09318 21.25 6.73851 21.2484 5.71085 21.1102C4.70476 20.975 4.12511 20.7213 3.7019 20.2981L2.64124 21.3588C3.38961 22.1071 4.33855 22.4392 5.51098 22.5969C6.66182 22.7516 8.13558 22.75 10 22.75V21.25ZM1.25 14C1.25 15.8644 1.24841 17.3382 1.40313 18.489C1.56076 19.6614 1.89288 20.6104 2.64124 21.3588L3.7019 20.2981C3.27869 19.8749 3.02502 19.2952 2.88976 18.2892C2.75159 17.2615 2.75 15.9068 2.75 14H1.25ZM14 22.75C15.8644 22.75 17.3382 22.7516 18.489 22.5969C19.6614 22.4392 20.6104 22.1071 21.3588 21.3588L20.2981 20.2981C19.8749 20.7213 19.2952 20.975 18.2892 21.1102C17.2615 21.2484 15.9068 21.25 14 21.25V22.75ZM21.25 14C21.25 15.9068 21.2484 17.2615 21.1102 18.2892C20.975 19.2952 20.7213 19.8749 20.2981 20.2981L21.3588 21.3588C22.1071 20.6104 22.4392 19.6614 22.5969 18.489C22.7516 17.3382 22.75 15.8644 22.75 14H21.25ZM2.75 10C2.75 8.09318 2.75159 6.73851 2.88976 5.71085C3.02502 4.70476 3.27869 4.12511 3.7019 3.7019L2.64124 2.64124C1.89288 3.38961 1.56076 4.33855 1.40313 5.51098C1.24841 6.66182 1.25 8.13558 1.25 10H2.75ZM10.0298 1.25C8.15538 1.25 6.67442 1.24842 5.51887 1.40307C4.34232 1.56054 3.39019 1.8923 2.64124 2.64124L3.7019 3.7019C4.12453 3.27928 4.70596 3.02525 5.71785 2.88982C6.75075 2.75158 8.11311 2.75 10.0298 2.75V1.25Z"
+                                        fill="currentColor" />
+                                    <path d="M6 14.5H14" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path d="M6 18H11.5" stroke="currentColor" stroke-width="1.5"
+                                        stroke-linecap="round" />
+                                    <path
+                                        d="M13 2.5V5C13 7.35702 13 8.53553 13.7322 9.26777C14.4645 10 15.643 10 18 10H22"
+                                        stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                                <span data-i18n="console">Консоль</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-versions">
+                    <div class="versions-container">
+                        <div class="versions-header">
+                            <div class="versions-title" data-i18n="minecraft_version">Версии Minecraft</div>
+                            <div class="versions-count" id="versions-count">0</div>
+                        </div>
+
+                        <input type="text" class="search-box" id="version-search" placeholder="Поиск версий..."
+                            data-i18n="search_versions">
+
+                        <div class="versions-filters">
+                            <button class="filter-btn active" data-filter="all" data-i18n="all">Все</button>
+                            <button class="filter-btn" data-filter="release" data-i18n="releases">Релизы</button>
+                            <button class="filter-btn" data-filter="snapshot" data-i18n="snapshots">Снимки</button>
+                            <button class="filter-btn" data-filter="modded" data-i18n="modded">Модифицированные</button>
+                        </div>
+
+                        <div style="display: flex; gap: 20px; flex: 1; min-height: 0;">
+
+                            <div class="versions-left-panel" style="flex: 1; overflow-y: auto; min-width: 0;">
+                                <div class="versions-grid" id="versions-grid"></div>
+                            </div>
+
+                            <div class="versions-right-panel"
+                                style="width: 280px; display: none; flex-direction: column; gap: 20px; flex-shrink: 0;">
+                                <div class="version-info-panel" id="version-info-panel"
+                                    style="background: #0d0d0d; border-radius: 15px; border: 1px solid #1a1a1a; padding: 12px; flex: 1; display: none; max-height: 150px; overflow-y: auto;">
+                                    <div class="version-info-title" id="version-info-title"
+                                        style="font-size: 16px; font-weight: 700; color: var(--accent-color); margin-bottom: 8px;">
+                                    </div>
+                                    <div class="version-info-description" id="version-info-description"
+                                        style="font-size: 11px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); line-height: 1.4; margin-bottom: 10px;">
+                                    </div>
+                                </div>
+
+                                <div class="version-subversions-panel" id="version-subversions-panel"
+                                    style="background: #0d0d0d; border-radius: 15px; border: 1px solid #1a1a1a; padding: 12px; display: none;">
+                                    <div style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.6); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;"
+                                        data-i18n="minor_version">
+                                        Минорная версия</div>
+                                    <div class="version-subversions-grid" id="version-subversions-grid"
+                                        style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+                                </div>
+
+                                <div
+                                    style="background: rgba(3,53,252,0.06); border: 1px solid rgba(3,53,252,0.18); border-radius: 14px; padding: 14px; display: flex; align-items: center; gap: 12px;">
+                                    <div id="versions-page-profile-initial"
+                                        style="width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, rgba(3,53,252,0.22), rgba(77,127,255,0.12)); border: 1px solid rgba(3,53,252,0.28); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 17px; font-weight: 800; color: #638aff;">
+                                        P</div>
+                                    <div style="flex: 1; min-width: 0;">
+                                        <div id="versions-page-profile-name"
+                                            style="font-size: 13px; font-weight: 700; color: var(--text-color, #fff); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            Player</div>
+                                        <div style="font-size: 11px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4);"
+                                            data-i18n="active_profile">Активный профиль</div>
+                                    </div>
+                                    <button onclick="switchPage('accounts')" title="Управление аккаунтами"
+                                        style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2.5">
+                                            <path d="M9 18l6-6-6-6" stroke-linecap="round" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div style="display: flex; gap: 10px; flex-direction: column;">
+                                    <div>
+                                        <button class="btn btn-primary btn-loading-state" id="launch-version-btn"
+                                            style="flex: 1; display: none; width: 100%;">
+                                            <span class="btn-text" data-i18n="play">ЗАПУСТИТЬ</span>
+                                            <span class="loading-spinner"></span>
+                                        </button>
+                                        <div class="download-progress-container" id="launch-progress">
+                                            <div class="progress-bar-wrapper">
+                                                <div class="progress-bar-fill" id="launch-progress-bar"></div>
+                                            </div>
+                                            <div class="progress-info">
+                                                <div class="progress-label">
+                                                    <span class="progress-status" id="launch-status"
+                                                        data-i18n="loading">Загрузка...</span>
+                                                    <span class="progress-speed" id="launch-speed"></span>
+                                                </div>
+                                                <div class="progress-percent" id="launch-percent">0%</div>
+                                            </div>
+                                            <div class="download-status downloading" id="launch-status-badge">
+                                                <span class="status-dot pulse"></span>
+                                                <span id="launch-status-text" data-i18n="status_downloading">Загрузка
+                                                    игры...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-secondary" id="install-version-btn"
+                                        style="flex: 1; display: none; background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5); color: #22c55e;"
+                                        data-i18n="install">УСТАНОВИТЬ</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="popular-versions" style="display: none;">
+                            <div class="section-title" data-i18n="popular_versions">Популярные версии</div>
+                            <div class="popular-versions-list" id="popular-versions-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-modpacks">
+                    <div class="page-bg-deco">
+                        <div class="page-bg-deco-glow"></div>
+                        <div class="page-bg-deco-grid"></div>
+                    </div>
+                    <div
+                        style="padding: 25px 30px; width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; position: relative; z-index: 1; box-sizing: border-box;">
+                        <div
+                            style="background: rgba(10,10,12,0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 20px; flex: 1; min-height: 0;">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;">
+                                <div>
+                                    <h2 style="margin: 0; font-size: 22px; font-weight: 700;" data-i18n="modpacks">
+                                        Сборки
+                                    </h2>
+                                    <div
+                                        style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4); font-size: 13px; margin-top: 4px;">
+                                        Управляйте
+                                        своими игровыми сборками с модами</div>
+                                </div>
+                                <button class="btn btn-primary" onclick="showModal('create-modpack-modal')"
+                                    style="display:flex;align-items:center;gap:8px;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+                                    </svg>
+                                    <span data-i18n="create_modpack">Создать сборку</span>
+                                </button>
+                            </div>
+                            <div id="modpacks-list"
+                                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; overflow-y: auto; flex: 1; padding: 2px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-modpack-details" style="flex-direction: column; box-sizing: border-box;">
+                    <div class="page-bg-deco">
+                        <div class="page-bg-deco-glow"></div>
+                        <div class="page-bg-deco-grid"></div>
+                    </div>
+                    <div
+                        style="padding: 25px 30px; width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; position: relative; z-index: 1; box-sizing: border-box;">
+                        <div
+                            style="background: rgba(10,10,12,0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06); border-radius: 20px; display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
+                            <div
+                                style="display: flex; gap: 16px; align-items: center; padding: 20px 24px 16px; flex-shrink: 0; border-bottom: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06);">
+                                <button class="btn btn-secondary" onclick="switchPage('modpacks')"
+                                    style="display:flex;align-items:center;gap:6px;padding:8px 14px;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5">
+                                        <path d="M15 6l-6 6 6 6" stroke-linecap="round" />
+                                    </svg>
+                                    <span data-i18n="back">Назад</span>
+                                </button>
+                                <div style="flex: 1; min-width: 0;">
+                                    <div id="modpack-details-title"
+                                        style="font-size: 20px; font-weight: 700; color: var(--text-color, #fff); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        Сборка</div>
+                                    <div style="display: flex; gap: 8px; margin-top: 6px; align-items: center;">
+                                        <span id="modpack-details-version"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); padding: 3px 10px; border-radius: 20px; font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7);"></span>
+                                        <span id="modpack-details-loader"
+                                            style="background: rgba(3,53,252,0.18); color: #638aff; padding: 3px 10px; border-radius: 20px; font-size: 12px; text-transform: capitalize;"></span>
+                                        <span id="modpack-mods-count"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.04); padding: 3px 10px; border-radius: 20px; font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4);">0
+                                            модов</span>
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:10px;">
+                                    <button class="btn btn-secondary" id="modpack-check-updates-btn"
+                                        onclick="checkModpackUpdates()" style="font-size:12px;padding:8px 14px;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2"
+                                            style="margin-right:5px;vertical-align:middle;">
+                                            <path d="M4 4v6h6M20 20v-6h-6M4.93 14.93A10 10 0 1 1 20 12" />
+                                        </svg>
+                                        Проверить обновления
+                                    </button>
+                                    <button class="btn btn-primary" onclick="switchPage('mods-browser')"
+                                        style="font-size:12px;padding:8px 14px;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2"
+                                            style="margin-right:5px;vertical-align:middle;">
+                                            <path d="M12 5v14M5 12h14" stroke-linecap="round" />
+                                        </svg>
+                                        Добавить моды
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="modpack-mods-list"
+                                style="flex: 1; overflow-y: auto; padding: 16px 24px; display: flex; flex-direction: column; gap: 8px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-mods-browser" style="flex-direction: column; box-sizing: border-box;">
+                    <div class="page-bg-deco">
+                        <div class="page-bg-deco-glow"></div>
+                        <div class="page-bg-deco-grid"></div>
+                    </div>
+                    <div
+                        style="padding: 25px 30px; width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; position: relative; z-index: 1; box-sizing: border-box;">
+                        <div
+                            style="background: rgba(10,10,12,0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06); border-radius: 20px; display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden;">
+                            <div
+                                style="padding: 20px 24px 16px; flex-shrink: 0; border-bottom: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06);">
+                                <div style="display: flex; justify-content: space-between; align-items: center;
+                                margin-bottom: 14px;">
+                                    <div>
+                                        <h2 style="margin: 0; font-size: 20px; font-weight: 700;"
+                                            data-i18n="mods_browser">
+                                            Моды</h2>
+                                        <div
+                                            style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4); font-size: 12px; margin-top: 3px;">
+                                            Поиск и
+                                            установка модов из Modrinth</div>
+                                    </div>
+                                    <div style="display:flex; gap: 10px; align-items: center;">
+                                        <div id="mods-browser-modpack-info"
+                                            style="display:none; background: rgba(3,53,252,0.12); border: 1px solid rgba(3,53,252,0.25); border-radius: 10px; padding: 6px 14px; font-size: 12px; color: #638aff;">
+                                            Установка в: <strong id="mods-browser-modpack-name"></strong>
+                                            <button onclick="clearModsBrowserTarget()"
+                                                style="background:none;border:none;color:rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4);cursor:pointer;margin-left:8px;font-size:14px;">✕</button>
+                                        </div>
+                                        <select id="mods-browser-modpack-select" onchange="onModpackSelectChange()"
+                                            style="background:rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05);border:1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);border-radius:8px;color:var(--text-color, #fff);padding:7px 12px;font-size:13px;outline:none;">
+                                            <option value="">Выбрать сборку...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <div style="flex: 1; position: relative;">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4)"
+                                            stroke-width="2"
+                                            style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;">
+                                            <circle cx="11" cy="11" r="7" />
+                                            <path d="M20 20l-3-3" stroke-linecap="round" />
+                                        </svg>
+                                        <input type="text" id="mods-search-input" placeholder="Поиск модов..."
+                                            style="width:100%;padding:10px 12px 10px 38px;background:rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05);border:1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);border-radius:10px;color:var(--text-color, #fff);font-size:14px;outline:none;box-sizing:border-box;"
+                                            oninput="debouncedModSearch()">
+                                    </div>
+                                    <select id="mods-filter-version"
+                                        style="background:rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05);border:1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);border-radius:10px;color:var(--text-color, #fff);padding:10px 14px;font-size:13px;outline:none;"
+                                        onchange="searchMods()">
+                                        <option value="">Все версии</option>
+                                    </select>
+                                    <select id="mods-filter-loader"
+                                        style="background:rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05);border:1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);border-radius:10px;color:var(--text-color, #fff);padding:10px 14px;font-size:13px;outline:none;"
+                                        onchange="searchMods()">
+                                        <option value="">Все загрузчики</option>
+                                        <option value="fabric">Fabric</option>
+                                        <option value="forge">Forge</option>
+                                        <option value="neoforge">NeoForge</option>
+                                        <option value="quilt">Quilt</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div style="flex: 1; overflow-y: auto; padding: 16px 24px;">
+                                <div id="mods-browser-grid"
+                                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px;">
+                                </div>
+                                <div id="mods-browser-load-more"
+                                    style="display:none; text-align:center; padding: 20px;">
+                                    <button class="btn btn-secondary" onclick="loadMoreMods()">Загрузить ещё</button>
+                                </div>
+                                <div id="mods-browser-empty"
+                                    style="display:none; text-align:center; padding: 60px 0; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.3);">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1" style="margin-bottom:12px;opacity:0.4;">
+                                        <circle cx="11" cy="11" r="7" />
+                                        <path d="M20 20l-3-3" stroke-linecap="round" />
+                                    </svg>
+                                    <div>Ничего не найдено</div>
+                                </div>
+                                <div id="mods-browser-loading"
+                                    style="display:none; text-align:center; padding: 60px 0; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4);">
+                                    <div
+                                        style="display:inline-block;width:32px;height:32px;border:2px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);border-top-color:#638aff;border-radius:50%;animation:spin 0.8s linear infinite;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-settings">
+                    <div style="overflow-y: auto; flex: 1; width: 100%; padding: 16px 20px; box-sizing: border-box;">
+                        <div class="settings-glass-wrap">
+                            <div class="settings-glass-blur"></div>
+                            <div class="settings-glass-inner">
+                                <div class="settings-container">
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="paths_java">Пути и Java</div>
+                                        <div class="settings-grid">
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="game_path">Папка назначения
+                                                    (.minecraft)</label>
+                                                <div style="display: flex; gap: 10px;">
+                                                    <input type="text" id="settings-game-path"
+                                                        placeholder="По умолчанию" data-i18n="default" readonly
+                                                        style="flex: 1; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                    <button class="btn btn-secondary"
+                                                        onclick="browseGamePath()">📂</button>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="java_path">Путь к Java</label>
+                                                <div style="display: flex; gap: 10px;">
+                                                    <input type="text" id="settings-java-path"
+                                                        placeholder="Автоматически" data-i18n="auto" readonly
+                                                        style="flex: 1; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                    <button class="btn btn-secondary" onclick="browseJavaPath()"><svg
+                                                            width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            style="vertical-align: middle;">
+                                                            <path
+                                                                d="M3.28441 11.2661C3.15113 9.26687 3.08449 8.26726 3.67729 7.63363C4.27009 7 5.27191 7 7.27555 7H12.7245C14.7281 7 15.7299 7 16.3227 7.63363C16.9155 8.26726 16.8489 9.26687 16.7156 11.2661L16.3734 16.3991C16.1964 19.054 16.1079 20.3815 15.2429 21.1907C14.3779 22 13.0475 22 10.3867 22H9.61333C6.95253 22 5.62212 22 4.75712 21.1907C3.89211 20.3815 3.80361 19.054 3.62662 16.3991L3.28441 11.2661Z"
+                                                                stroke="currentColor" stroke-width="1.5" />
+                                                            <path
+                                                                d="M17 17H18C20.2091 17 22 15.2091 22 13C22 10.7909 20.2091 9 18 9H17"
+                                                                stroke="currentColor" stroke-width="1.5" />
+                                                        </svg></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="memory_ram">Память (RAM)</div>
+                                        <div class="input-group">
+                                            <label class="input-label" data-i18n="allocated_memory">Выделенная
+                                                память</label>
+                                            <div style="display: flex; gap: 12px; align-items: center;">
+                                                <input type="range" id="settings-global-ram" min="1024" max="16384"
+                                                    step="512" value="4096"
+                                                    style="flex: 1; height: 6px; border-radius: 3px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none;">
+                                                <span id="settings-global-ram-display"
+                                                    style="color: #0335fc; font-weight: 700; min-width: 60px; text-align: right; font-size: 14px;">4096
+                                                    MB</span>
+                                            </div>
+                                        </div>
+                                        <div class="input-group">
+                                            <label class="input-label" data-i18n="jvm_args">JVM Аргументы</label>
+                                            <input type="text" id="settings-jvm-args" placeholder="-XX:+UseG1GC ..."
+                                                style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="launch_settings">Запуск</div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="auto-connect" class="toggle-input">
+                                            <label for="auto-connect" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="auto-connect"
+                                                data-i18n="auto_connect">Автоматически входить на
+                                                сервер</label>
+                                        </div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="keep-launcher-open" class="toggle-input">
+                                            <label for="keep-launcher-open" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="keep-launcher-open"
+                                                data-i18n="keep_open">Оставлять
+                                                лаунчер
+                                                открытым</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="versions">Версии</div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-show-snapshots" class="toggle-input"
+                                                onchange="updateVersionFilters()">
+                                            <label for="settings-show-snapshots" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-show-snapshots"
+                                                data-i18n="snapshots">Снимки (Snapshots)</label>
+                                        </div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-show-beta" class="toggle-input"
+                                                onchange="updateVersionFilters()">
+                                            <label for="settings-show-beta" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-show-beta"
+                                                data-i18n="beta_versions">Бета-версии (Beta)</label>
+                                        </div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-show-alpha" class="toggle-input"
+                                                onchange="updateVersionFilters()">
+                                            <label for="settings-show-alpha" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-show-alpha"
+                                                data-i18n="alpha_versions">Альфа-версии (Alpha)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="integrations">Интеграции</div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="minimize-to-tray" class="toggle-input">
+                                            <label for="minimize-to-tray" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="minimize-to-tray"
+                                                data-i18n="minimize_to_tray">Скрывать в трей при
+                                                закрытии</label>
+                                        </div>
+                                        <div style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); margin-top: 8px; padding: 8px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.02); border-radius: 6px;"
+                                            data-i18n="minimize_tray_hint">💡 При включении лаунчер будет скрываться в
+                                            трей
+                                            вместо полного закрытия. Включение
+                                            этой опции автоматически включает Discord RPC.
+                                        </div>
+                                        <div class="toggle-container" style="margin-top: 15px;">
+                                            <input type="checkbox" id="discord-rpc" class="toggle-input"
+                                                data-onchange="onDiscordRpcChange">
+                                            <label for="discord-rpc" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="discord-rpc">Discord Rich Presence</label>
+                                        </div>
+                                        <div style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); margin-top: 8px; padding: 8px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.02); border-radius: 6px;"
+                                            data-i18n="discord_hint">
+                                            💡 Показывает вашу версию Minecraft и игрока в Discord профиле. Требует
+                                            запущенный
+                                            Discord.
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="game_window">Окно Игры</div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-fullscreen" class="toggle-input"
+                                                onchange="autoSaveSettings()">
+                                            <label for="settings-fullscreen" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-fullscreen"
+                                                data-i18n="fullscreen">Форсированный полноэкранный режим</label>
+                                        </div>
+                                        <div class="settings-grid" style="margin-top: 15px;">
+                                            <div class="input-group" style="display: flex; gap: 10px;">
+                                                <div style="flex: 1;">
+                                                    <label class="input-label" data-i18n="window_width">Ширина
+                                                        окна</label>
+                                                    <input type="number" id="settings-window-width" placeholder="854"
+                                                        onchange="autoSaveSettings()"
+                                                        style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                </div>
+                                                <div style="flex: 1;">
+                                                    <label class="input-label" data-i18n="window_height">Высота
+                                                        окна</label>
+                                                    <input type="number" id="settings-window-height" placeholder="480"
+                                                        onchange="autoSaveSettings()"
+                                                        style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="advanced_ui">Продвинутый
+                                            Интерфейс &
+                                            Внешний вид</div>
+                                        <div class="settings-grid">
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="layout">Расположение главной
+                                                    страницы</label>
+                                                <select id="settings-layout" onchange="autoSaveSettings()"
+                                                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                    <option value="left" data-i18n="layout_left">Слева (Стандарт)
+                                                    </option>
+                                                    <option value="right" data-i18n="layout_right">Справа</option>
+                                                    <option value="center" data-i18n="layout_center">По центру</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="font_family">Шрифт
+                                                    лаунчера</label>
+                                                <select id="settings-font-family" onchange="autoSaveSettings()"
+                                                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                    <option value="axiforma">Axiforma (По умолчанию)</option>
+                                                    <option value="Inter">Inter</option>
+                                                    <option value="Roboto">Roboto</option>
+                                                    <option value="Outfit">Outfit</option>
+                                                    <option value="monospace">Monospace</option>
+                                                    <option value="sans-serif">Без засечек (System)</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="theme">Язык</label>
+                                                <select id="settings-page-language-select" onchange="autoSaveSettings()"
+                                                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                    <option value="ru">Русский</option>
+                                                    <option value="en">English</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="theme">Тема
+                                                    (Тёмная/Светлая)</label>
+                                                <select id="settings-page-theme-select" onchange="autoSaveSettings()"
+                                                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                                    <option value="dark">Тёмная</option>
+                                                    <option value="light">Светлая</option>
+                                                </select>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="border_radius">Скругление объектов
+                                                    (px)</label>
+                                                <div style="display: flex; gap: 12px; align-items: center;">
+                                                    <input type="range" id="settings-border-radius" min="0" max="30"
+                                                        step="1" value="12" onchange="autoSaveSettings()"
+                                                        oninput="document.getElementById('border-radius-val').textContent = this.value"
+                                                        style="flex: 1; height: 6px; border-radius: 3px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);">
+                                                    <span id="border-radius-val"
+                                                        style="color: var(--accent-light, #638aff); font-weight: 700; min-width: 30px; text-align: right; font-size: 14px;">12</span>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="accent_color">Акцентный цвет
+                                                    темы</label>
+                                                <div style="display: flex; gap: 10px; align-items: center;">
+                                                    <input type="color" id="settings-page-accent-color" value="#0335fc"
+                                                        onchange="autoSaveSettings()">
+                                                    <button class="btn btn-secondary"
+                                                        onclick="document.getElementById('settings-page-accent-color').value='#0335fc'; autoSaveSettings();"
+                                                        style="padding: 8px 12px; font-size: 12px;">Сброс</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="launcher_background">Фон Лаунчера
+                                        </div>
+                                        <div class="settings-grid">
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="bg_blur">Размытие фона
+                                                    (px)</label>
+                                                <div style="display: flex; gap: 12px; align-items: center;">
+                                                    <input type="range" id="settings-bg-blur" min="0" max="50" step="1"
+                                                        value="0" onchange="autoSaveSettings()"
+                                                        oninput="document.getElementById('bg-blur-val').textContent = this.value"
+                                                        style="flex: 1; height: 6px; border-radius: 3px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);">
+                                                    <span id="bg-blur-val"
+                                                        style="color: var(--accent-light, #638aff); font-weight: 700; min-width: 30px; text-align: right; font-size: 14px;">0</span>
+                                                </div>
+                                            </div>
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="bg_darken">Затемнение фона
+                                                    (%)</label>
+                                                <div style="display: flex; gap: 12px; align-items: center;">
+                                                    <input type="range" id="settings-bg-darken" min="0" max="100"
+                                                        step="1" value="20" onchange="autoSaveSettings()"
+                                                        oninput="document.getElementById('bg-darken-val').textContent = this.value"
+                                                        style="flex: 1; height: 6px; border-radius: 3px; outline: none; cursor: pointer; -webkit-appearance: none; appearance: none; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1);">
+                                                    <span id="bg-darken-val"
+                                                        style="color: var(--accent-light, #638aff); font-weight: 700; min-width: 30px; text-align: right; font-size: 14px;">20</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="advanced_system">Системные / Логи
+                                        </div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-save-logs" class="toggle-input"
+                                                onchange="autoSaveSettings()">
+                                            <label for="settings-save-logs" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-save-logs"
+                                                data-i18n="save_logs">Сохранять логи запуска в папке лаунчера</label>
+                                        </div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-hide-launch-command"
+                                                class="toggle-input" onchange="autoSaveSettings()" checked>
+                                            <label for="settings-hide-launch-command" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-hide-launch-command"
+                                                data-i18n="hide_launch_cmd">Скрывать команду запуска в логах (для
+                                                чистоты)</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="notifications_launch">Уведомления
+                                            и
+                                            запуск</div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-notify-download" class="toggle-input"
+                                                onchange="autoSaveSettings()" checked>
+                                            <label for="settings-notify-download" class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-notify-download"
+                                                data-i18n="notify_after_download">Уведомлять после скачивания
+                                                версии</label>
+                                        </div>
+                                        <div class="toggle-container">
+                                            <input type="checkbox" id="settings-auto-launch-after-download"
+                                                class="toggle-input" onchange="autoSaveSettings()" checked>
+                                            <label for="settings-auto-launch-after-download"
+                                                class="toggle-switch"></label>
+                                            <label class="toggle-label" for="settings-auto-launch-after-download"
+                                                data-i18n="auto_launch_after_download">Запускать игру сразу после
+                                                скачивания</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="update_maintenance">Обновление и
+                                            обслуживание</div>
+                                        <div class="settings-grid">
+                                            <div class="input-group">
+                                                <label class="input-label" data-i18n="update_channel">Канал
+                                                    обновлений</label>
+                                                <div class="custom-select-wrapper">
+                                                    <div class="custom-select" id="settings-page-update-channel-select"
+                                                        data-onChange="onUpdateChannelChange">
+                                                        <div class="custom-select-trigger"
+                                                            style="padding: 10px 12px; font-size: 14px;">
+                                                            <span>Стабильный</span>
+                                                            <svg class="icon" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2">
+                                                                <polyline points="6 9 12 15 18 9" />
+                                                            </svg>
+                                                        </div>
+                                                        <div class="custom-options">
+                                                            <div class="custom-option selected" data-value="stable"
+                                                                data-i18n="channel_stable">Стабильный</div>
+                                                            <div class="custom-option" data-value="beta"
+                                                                data-i18n="channel_beta">Бета (Тестирование)</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="appearance">Внешний вид</div>
+                                        <div class="input-group">
+                                            <label class="input-label" data-i18n="language">Язык</label>
+                                            <div class="custom-select-wrapper">
+                                                <div class="custom-select" id="settings-modal-language-select">
+                                                    <div class="custom-select-trigger"
+                                                        style="padding: 10px 12px; font-size: 14px;">
+                                                        <span>Русский</span>
+                                                        <svg class="icon" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2">
+                                                            <polyline points="6 9 12 15 18 9" />
+                                                        </svg>
+                                                    </div>
+                                                    <div class="custom-options">
+                                                        <div class="custom-option selected" data-value="ru">🇷🇺 Русский
+                                                        </div>
+                                                        <div class="custom-option" data-value="en">🇺🇸 English</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="settings-section">
+                                        <div class="settings-section-title" data-i18n="launcher_background">Фон лаунчера
+                                        </div>
+                                        <div class="bg-picker-wrap">
+                                            <div class="bg-preview-box">
+                                                <img id="bg-preview-img" alt="Фон">
+                                                <div class="bg-preview-placeholder">
+                                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="1.5">
+                                                        <rect x="3" y="3" width="18" height="18" rx="3" />
+                                                        <circle cx="8.5" cy="8.5" r="1.5" />
+                                                        <path d="M21 15l-5-5L5 21" />
+                                                    </svg>
+                                                    <span data-i18n="bg_no_file">Файл не выбран</span>
+                                                </div>
+                                            </div>
+                                            <div class="bg-actions">
+                                                <button class="bg-btn" onclick="browseBackground()">
+                                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                                        <polyline points="17 8 12 3 7 8" />
+                                                        <line x1="12" y1="3" x2="12" y2="15" />
+                                                    </svg>
+                                                    <span data-i18n="bg_select">Выбрать файл</span>
+                                                </button>
+                                                <button class="bg-btn" onclick="promptBackgroundUrl()">
+                                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <path
+                                                            d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                                                        <path
+                                                            d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                                                    </svg>
+                                                    <span data-i18n="bg_url">По ссылке</span>
+                                                </button>
+                                                <button class="bg-btn bg-btn-danger" id="bg-remove-btn"
+                                                    onclick="removeBackground()">
+                                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2">
+                                                        <polyline points="3 6 5 6 21 6" />
+                                                        <path d="M19 6l-1 14H6L5 6" />
+                                                    </svg>
+                                                    <span data-i18n="bg_remove">Убрать</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+                                        <button class="btn btn-secondary" onclick="showAboutModal()"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.12); color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"><svg
+                                                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="12" cy="12" r="10" stroke="currentColor"
+                                                    stroke-width="1.5" />
+                                                <path d="M12 17V11" stroke="currentColor" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <circle r="1" transform="matrix(1 0 0 -1 12 8)" fill="currentColor" />
+                                            </svg>
+                                            <span data-i18n="about">О программе</span></button>
+                                        <button class="btn btn-secondary" id="btn-export-about"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.12); color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"><svg
+                                                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12"
+                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                                <path d="M12 14L12 4M12 4L15 7M12 4L9 7" stroke="currentColor"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <span data-i18n="export">Экспорт</span></button>
+                                        <button class="btn btn-secondary" id="btn-import-about"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.12); color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"><svg
+                                                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12"
+                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                                                <path d="M12 4L12 14M12 14L15 11M12 14L9 11" stroke="currentColor"
+                                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <span data-i18n="import">Импорт</span></button>
+                                        <button class="btn btn-secondary" onclick="repairLauncherFiles()"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.12); color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"><svg
+                                                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M18.364 8.05026L17.6569 7.34315C14.5327 4.21896 9.46734 4.21896 6.34315 7.34315C3.21895 10.4673 3.21895 15.5327 6.34315 18.6569C9.46734 21.7811 14.5327 21.7811 17.6569 18.6569C19.4737 16.84 20.234 14.3668 19.9377 12.0005M18.364 8.05026H14.1213M18.364 8.05026V3.80762"
+                                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                            <span data-i18n="repair">Восстановить</span></button>
+                                        <button class="btn btn-secondary" onclick="showResetDialog()"
+                                            style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.12); color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); padding: 10px 18px; border-radius: 8px; font-weight: 500; font-size: 13px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"><svg
+                                                width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M5.31171 10.7615C8.23007 5.58716 9.68925 3 12 3C14.3107 3 15.7699 5.58716 18.6883 10.7615L19.0519 11.4063C21.4771 15.7061 22.6897 17.856 21.5937 19.428C20.4978 21 17.7864 21 12.3637 21H11.6363C6.21356 21 3.50217 21 2.40626 19.428C1.31034 17.856 2.52291 15.7061 4.94805 11.4063L5.31171 10.7615Z"
+                                                    stroke="currentColor" stroke-width="1.5" />
+                                                <path d="M12 8V13" stroke="currentColor" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <circle cx="12" cy="16" r="1" fill="currentColor" />
+                                            </svg>
+                                            <span data-i18n="reset">Сбросить</span></button>
+                                    </div>
+
+                                    <div
+                                        style="margin-top: 40px; padding-top: 30px; border-top: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); text-align: center;">
+                                        <div
+                                            style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4);">
+                                            FlowCross Launcher
+                                            <span id="launcher-version-display"
+                                                style="color: #0335fc; font-weight: 600;">v0.2.1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-accounts">
+                    <div class="page-bg-deco">
+                        <div class="page-bg-deco-glow"></div>
+                        <div class="page-bg-deco-grid"></div>
+                    </div>
+                    <div
+                        style="padding: 25px 30px; width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; position: relative; z-index: 1; box-sizing: border-box;">
+                        <div
+                            style="background: rgba(10,10,12,0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 20px; flex: 1; min-height: 0;">
+
+                            <div class="accounts-hero">
+                                <div class="accounts-hero-bg"></div>
+                                <div class="accounts-hero-grid"></div>
+                                <div class="accounts-hero-inner">
+                                    <div class="accounts-hero-left">
+                                        <div class="accounts-hero-icon">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                                <circle cx="12" cy="7" r="4" />
+                                            </svg>
+                                        </div>
+                                        <div class="accounts-hero-text">
+                                            <h2 data-i18n="accounts_title">Аккаунты</h2>
+                                            <p data-i18n="accounts_subtitle">Управляйте своими игровыми профилями</p>
+                                        </div>
+                                    </div>
+                                    <div class="accounts-hero-stats">
+                                        <div class="accounts-stat">
+                                            <div class="accounts-stat-num" id="accounts-total-stat">0</div>
+                                            <div class="accounts-stat-label" data-i18n="stat_profiles">Профилей</div>
+                                        </div>
+                                        <div class="accounts-stat">
+                                            <div class="accounts-stat-num" style="color: #22c55e;">1</div>
+                                            <div class="accounts-stat-label" data-i18n="stat_active">Активный</div>
+                                        </div>
+                                        <div class="accounts-stat">
+                                            <div class="accounts-stat-num"
+                                                style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.25); font-size: 16px;">
+                                                15</div>
+                                            <div class="accounts-stat-label" data-i18n="stat_limit">Лимит</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                style="display: grid; grid-template-columns: 320px 1fr; gap: 20px; flex: 1; min-height: 0;">
+
+                                <div style="display: flex; flex-direction: column; gap: 12px;">
+
+                                    <div
+                                        style="display: flex; align-items: center; justify-content: space-between; padding: 0 4px;">
+                                        <h3
+                                            style="margin: 0; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.9); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            <span data-i18n="profiles_label">Профили</span> (<span
+                                                id="accounts-count">0</span>)
+                                        </h3>
+                                    </div>
+
+                                    <div id="accounts-list"
+                                        style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; min-height: 0;">
+
+                                    </div>
+
+                                    <button class="btn btn-primary" onclick="showModal('create-profile-modal')"
+                                        style="width: 100%; padding: 11px; border-radius: 10px; font-weight: 600; font-size: 14px; margin-top: auto;"
+                                        data-i18n="add">
+                                        Добавить</button>
+                                </div>
+
+                                <div style="display: flex; flex-direction: column; gap: 0; min-height: 0;">
+
+                                    <div id="edit-panel"
+                                        style="background: linear-gradient(135deg, rgba(var(--bg-r2, 10), var(--bg-g2, 10), var(--bg-b2, 10), 0.8) 0%, rgba(13,13,13,0.95) 100%); backdrop-filter: blur(10px); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border-radius: 14px; padding: 28px; display: none; overflow-y: auto;">
+                                        <div style="margin-bottom: 24px;">
+                                            <h3 style="margin: 0 0 6px 0; color: var(--text-color, #fff); font-size: 16px; font-weight: 700;"
+                                                data-i18n="edit_profile_title">Редактирование</h3>
+                                            <p style="margin: 0; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); font-size: 12px;"
+                                                data-i18n="edit_profile_subtitle">Изменение параметров профиля</p>
+                                        </div>
+
+                                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                                            <div>
+                                                <label class="input-label"
+                                                    style="font-size: 12px; margin-bottom: 8px; display: block;"
+                                                    data-i18n="profile_name">Имя профиля</label>
+                                                <input type="text" id="edit-account-name" placeholder="Мой профиль"
+                                                    data-i18n="profile_name_placeholder"
+                                                    style="width: 100%; padding: 10px 12px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.04); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff); font-size: 14px; transition: all 0.2s;">
+                                            </div>
+
+                                            <div>
+                                                <label class="input-label"
+                                                    style="font-size: 12px; margin-bottom: 8px; display: block;"
+                                                    data-i18n="username">UUID / Никнейм</label>
+                                                <input type="text" id="edit-account-uuid" placeholder="UUID или никнейм"
+                                                    data-i18n="username_placeholder"
+                                                    style="width: 100%; padding: 10px 12px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.04); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff); font-size: 14px;">
+                                            </div>
+
+                                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                                <div>
+                                                    <label class="input-label"
+                                                        style="font-size: 12px; margin-bottom: 8px; display: block;"
+                                                        data-i18n="account_type">Тип</label>
+                                                    <div class="custom-select-wrapper">
+                                                        <div class="custom-select" id="account-type-select">
+                                                            <div class="custom-select-trigger"
+                                                                style="padding: 10px 12px; font-size: 14px;">
+                                                                <span data-i18n="licensed">Лицензированный</span>
+                                                                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <polyline points="6 9 12 15 18 9" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="custom-options">
+                                                                <div class="custom-option selected"
+                                                                    data-value="licensed" data-i18n="licensed">
+                                                                    Лицензированный</div>
+                                                                <div class="custom-option" data-value="cracked"
+                                                                    data-i18n="offline">Кракленный
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <label class="input-label"
+                                                        style="font-size: 12px; margin-bottom: 8px; display: block;">Java</label>
+                                                    <div class="custom-select-wrapper">
+                                                        <div class="custom-select" id="account-java-select">
+                                                            <div class="custom-select-trigger"
+                                                                style="padding: 10px 12px; font-size: 14px;">
+                                                                <span>Java 8</span>
+                                                                <svg class="icon" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2">
+                                                                    <polyline points="6 9 12 15 18 9" />
+                                                                </svg>
+                                                            </div>
+                                                            <div class="custom-options">
+                                                                <div class="custom-option selected" data-value="8">
+                                                                    Java 8
+                                                                </div>
+                                                                <div class="custom-option" data-value="11">Java 11
+                                                                </div>
+                                                                <div class="custom-option" data-value="16">Java 16
+                                                                </div>
+                                                                <div class="custom-option" data-value="17">Java 17
+                                                                </div>
+                                                                <div class="custom-option" data-value="21">Java 21
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                style="padding: 12px; background: rgba(3,53,252,0.08); border: 1px solid rgba(3,53,252,0.2); border-radius: 8px; display: flex; align-items: flex-start; gap: 10px;">
+                                                <input type="checkbox" id="edit-account-auto-connect"
+                                                    class="toggle-input" style="margin-top: 2px;">
+                                                <label for="edit-account-auto-connect"
+                                                    style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.75); font-size: 13px; cursor: pointer; line-height: 1.4;"
+                                                    data-i18n="auto_connect">Автоматический
+                                                    вход при запуске лаунчера</label>
+                                            </div>
+
+                                            <div
+                                                style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05);">
+                                                <button class="btn btn-primary" onclick="saveEditAccount()"
+                                                    style="padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px;"
+                                                    data-i18n="save">Сохранить</button>
+                                                <button class="btn btn-secondary" onclick="cancelEditAccount()"
+                                                    style="padding: 10px; border-radius: 8px; font-weight: 600; font-size: 13px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); border-color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.12);"
+                                                    data-i18n="cancel">Отменить</button>
+                                            </div>
+
+                                            <button onclick="deleteEditAccount()"
+                                                style="width: 100%; padding: 10px; border-radius: 8px; background: rgba(220,53,69,0.15); border: 1px solid rgba(220,53,69,0.3); color: #ff6b6b; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; margin-top: 8px;"
+                                                data-i18n="delete_profile">Удалить
+                                                профиль</button>
+                                        </div>
+                                    </div>
+
+                                    <div id="no-account-selected"
+                                        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 30px; text-align: center; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5);">
+                                        <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.5;">👤</div>
+                                        <h3 style="margin: 0 0 8px 0; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); font-size: 15px; font-weight: 600;"
+                                            data-i18n="no_profile_selected">
+                                            Профиль не выбран</h3>
+                                        <p style="margin: 0; font-size: 13px; line-height: 1.5;"
+                                            data-i18n="select_profile_hint">Выберите профиль или
+                                            создайте новый для редактирования</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-logs">
+                    <div style="padding: 24px; display: flex; flex-direction: column; height: 100%; overflow: hidden;">
+                        <div class="page-hero-header" style="flex-shrink: 0; margin-bottom: 16px;">
+                            <div class="page-hero-header-bg"></div>
+                            <div class="page-hero-header-inner">
+                                <div class="page-hero-header-left">
+                                    <div class="page-hero-header-icon">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                            <polyline points="14 2 14 8 20 8" />
+                                            <line x1="16" y1="13" x2="8" y2="13" />
+                                            <line x1="16" y1="17" x2="8" y2="17" />
+                                            <polyline points="10 9 9 9 8 9" />
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 17px; font-weight: 800; color: var(--text-color, #fff); letter-spacing: -0.3px;"
+                                            data-i18n="logs">Логи</div>
+                                        <div
+                                            style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4); margin-top: 2px;">
+                                            Вывод
+                                            игрового процесса</div>
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 8px;">
+                                    <button onclick="copyLogs()" class="page-hero-btn"
+                                        data-i18n="copy">Копировать</button>
+                                    <button onclick="clearLogs()" class="page-hero-btn page-hero-btn-danger"
+                                        data-i18n="clear">Очистить</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="logs-container"
+                            style="flex: 1; overflow-y: auto; background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 12px; padding: 16px; font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; font-size: 12px; line-height: 1.6; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); min-height: 0;">
+                            <div style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.3);"
+                                data-i18n="waiting_logs">Ожидание
+                                логов...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page" id="page-changelog">
+                    <div class="page-bg-deco">
+                        <div class="page-bg-deco-glow"></div>
+                        <div class="page-bg-deco-grid"></div>
+                    </div>
+                    <div
+                        style="padding: 25px 30px; width: 100%; height: 100%; overflow-y: auto; display: flex; flex-direction: column; position: relative; z-index: 1; box-sizing: border-box;">
+                        <div
+                            style="background: rgba(10,10,12,0.75); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.06); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 20px; flex: 1; min-height: 0;">
+                            <div
+                                style="display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+                                <div style="font-size: 18px; font-weight: 700; color: var(--text-color, #fff);"
+                                    data-i18n="changelog">
+                                    Изменения
+                                </div>
+                                <div style="display: flex; gap: 6px;" id="changelog-filters">
+                                    <button class="changelog-filter-btn active" data-filter="all"
+                                        onclick="filterChangelog('all')"
+                                        style="padding: 5px 14px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.15); border-radius: 8px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); cursor: pointer; font-size: 12px; transition: all 0.2s;"
+                                        data-i18n="all">Все</button>
+                                    <button class="changelog-filter-btn" data-filter="release"
+                                        onclick="filterChangelog('release')"
+                                        style="padding: 5px 14px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.03); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border-radius: 8px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); cursor: pointer; font-size: 12px; transition: all 0.2s;"
+                                        data-i18n="releases">Релизы</button>
+                                    <button class="changelog-filter-btn" data-filter="snapshot"
+                                        onclick="filterChangelog('snapshot')"
+                                        style="padding: 5px 14px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.03); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.08); border-radius: 8px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); cursor: pointer; font-size: 12px; transition: all 0.2s;"
+                                        data-i18n="snapshots">Снапшоты</button>
+                                </div>
+                            </div>
+                            <div id="changelog-container" style="flex: 1; overflow-y: auto; min-height: 0;">
+                                <div id="changelog-grid"
+                                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; padding-bottom: 16px;">
+                                    <div style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.3); text-align: center; grid-column: 1 / -1; padding: 40px;"
+                                        data-i18n="loading">
+                                        Загрузка...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="page" id="page-about">
+                    <div style="overflow-y: auto; flex: 1; width: 100%;">
+                        <div class="settings-container">
+                            <div class="settings-section">
+                                <div class="settings-section-title">FlowCross Launcher</div>
+                                <p style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); line-height: 1.6; margin-bottom: 20px;"
+                                    data-i18n="about_description">
+                                    Современный лаунчер для Minecraft с поддержкой всех версий игры и
+                                    модлоадеров.
+                                    Разработан с использованием современных технологий для максимального
+                                    удобства и
+                                    производительности.
+                                </p>
+                                <div class="info-cards">
+                                    <div class="info-card">
+                                        <div class="info-card-title" data-i18n="version">Версия</div>
+                                        <div class="info-card-value" style="font-size: 18px;">0.2.0</div>
+                                    </div>
+                                    <div class="info-card">
+                                        <div class="info-card-title" data-i18n="platform">Платформа</div>
+                                        <div class="info-card-value" style="font-size: 18px;" id="platform">
+                                            Windows
+                                        </div>
+                                    </div>
+                                    <div class="info-card">
+                                        <div class="info-card-title" data-i18n="architecture">Логика и код</div>
+                                        <div class="info-card-value" style="font-size: 18px;">JavaScript</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="resize-handle" id="resize-handle"></div>
+
+    <div class="modal-overlay" id="create-modpack-modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="create_modpack_title">Создать сборку</div>
+                <button class="close-btn" onclick="closeModal('create-modpack-modal')">×</button>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="modpack_name">Название сборки</label>
+                <input type="text" id="create-modpack-name" placeholder="Моя сборка"
+                    data-i18n="modpack_name_placeholder">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="minecraft_version">Версия Minecraft</label>
+                <select id="create-modpack-version"
+                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="modloader">Загрузчик модов</label>
+                <select id="create-modpack-loader"
+                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                    <option value="fabric">Fabric</option>
+                    <option value="forge">Forge</option>
+                    <option value="neoforge">NeoForge</option>
+                    <option value="quilt">Quilt</option>
+                    <option value="vanilla">Vanilla</option>
+                </select>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button class="btn btn-primary" onclick="createModpack()" style="width: 100%;"
+                    data-i18n="create">Создать</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="create-profile-modal">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="create_profile_title">Создать профиль</div>
+                <button class="close-btn" onclick="closeModal('create-profile-modal')">×</button>
+            </div>
+
+            <div class="tabs"
+                style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); padding-bottom: 10px;">
+                <button class="tab-btn active" onclick="switchProfileTab('offline')" id="tab-offline"
+                    style="background: none; border: none; color: var(--text-color, #fff); cursor: pointer; padding: 5px 10px; border-bottom: 2px solid #0335fc;">Offline</button>
+                <button class="tab-btn" onclick="switchProfileTab('microsoft')" id="tab-microsoft"
+                    style="background: none; border: none; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.6); cursor: pointer; padding: 5px 10px;">Microsoft</button>
+            </div>
+
+            <div id="profile-offline-content">
+                <div class="input-group">
+                    <label class="input-label" data-i18n="nickname">Никнейм</label>
+                    <input type="text" id="create-profile-username" placeholder="Player"
+                        data-i18n="nickname_placeholder" onkeypress="if(event.key === 'Enter') createProfile()">
+                </div>
+            </div>
+
+            <div id="profile-microsoft-content" style="display: none; text-align: center; padding: 20px 0;">
+                <p style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); margin-bottom: 20px;"
+                    data-i18n="microsoft_login_text">
+                    Войдите в
+                    свой аккаунт Microsoft для игры
+                    на лицензионных серверах.</p>
+                <button class="btn btn-primary" onclick="startMicrosoftAuth()"
+                    style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; background-color: #00a4ef;">
+                    <svg width="20" height="20" viewBox="0 0 21 21">
+                        <path fill="#f25022" d="M1 1h9v9H1z" />
+                        <path fill="#00a4ef" d="M1 11h9v9H1z" />
+                        <path fill="#7fba00" d="M11 1h9v9H11z" />
+                        <path fill="#ffb900" d="M11 11h9v9H11z" />
+                    </svg>
+                    <span data-i18n="microsoft_login_btn">Войти через Microsoft</span>
+                </button>
+            </div>
+
+            <div id="offline-footer" style="margin-top: 20px;">
+                <button class="btn btn-primary" id="create-profile-submit" onclick="createProfile()"
+                    style="width: 100%;" data-i18n="create_profile_btn">Создать профиль</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="search-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="search_title">Поиск функций</div>
+                <button class="close-btn" onclick="closeModal('search-modal')">×</button>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="search_label">Введите запрос</label>
+                <input type="text" id="search-input" placeholder="Поиск по страницам и функциям..."
+                    data-i18n="search_placeholder">
+            </div>
+
+            <div id="search-results">
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="create-account-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="new_profile">Новый профиль</div>
+                <button class="close-btn" onclick="closeModal('create-account-modal')">×</button>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="enter_nickname">Введите никнейм</label>
+                <input type="text" id="new-account-nickname" placeholder="Steve" data-i18n="nickname_placeholder"
+                    onkeypress="if(event.key === 'Enter') createAccountFromModal()">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="createAccountFromModal()" style="flex: 1;"
+                    data-i18n="create">Создать</button>
+                <button class="btn btn-secondary" onclick="closeModal('create-account-modal')" style="flex: 1;"
+                    data-i18n="cancel">Отменить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="reset-settings-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="reset_settings_title">⚠️ Сброс настроек</div>
+                <button class="close-btn" onclick="closeModal('reset-settings-modal')">×</button>
+            </div>
+
+            <div
+                style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
+                <p data-i18n="reset_warning">Внимание! Все настройки лаунчера будут сброшены на значения по
+                    умолчанию.
+                </p>
+                <p style="margin-top: 12px;" data-i18n="reset_confirm_text">Для подтверждения введите точно:</p>
+                <div style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); padding: 12px; border-radius: 8px; margin-top: 10px; font-family: monospace; color: #0335fc; font-weight: 600;"
+                    id="reset-text-required">FlowCross-Player</div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="reset-confirmation-input" placeholder="Введите текст выше"
+                    data-i18n="reset_confirm_placeholder" onkeypress="if(event.key === 'Enter') confirmResetSettings()">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-primary" onclick="confirmResetSettings()"
+                    style="flex: 1; background: rgba(220,53,69,0.2); border-color: rgba(220,53,69,0.5); color: #ff6b6b;"
+                    data-i18n="reset_btn">Сбросить</button>
+                <button class="btn btn-secondary" onclick="closeModal('reset-settings-modal')" style="flex: 1;"
+                    data-i18n="cancel">Отменить</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="layout-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="layout_editor_title">Редактор расположения кнопок</div>
+                <button class="close-btn" onclick="closeModal('layout-modal')">×</button>
+            </div>
+
+            <div class="input-group">
+                <label class="input-label" data-i18n="layout_editor_label">Перетащите кнопки для изменения
+                    порядка</label>
+                <div id="layout-editor">
+                    <div class="layout-item" data-page="home" draggable="true" data-i18n="home">Главная</div>
+                    <div class="layout-item" data-page="versions" draggable="true" data-i18n="versions">Версии
+                    </div>
+                    <div class="layout-item" data-page="about" draggable="true" data-i18n="about">О программе
+                    </div>
+                </div>
+            </div>
+
+            <div
+                style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center;">
+                <div style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.6); margin-bottom: 8px;"
+                    data-i18n="launcher_version">Версия лаунчера:
+                    <span id="launcher-version" style="color: #0335fc; font-weight: 600;">0.2.0</span>
+                </div>
+                <div style="font-size: 11px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5);"
+                    id="version-status" data-i18n="version_up_to_date">✓ Версия актуальна
+                </div>
+            </div>
+
+            <button class="btn btn-primary" onclick="saveLayout()" style="margin-top: 15px;"
+                data-i18n="save">СОХРАНИТЬ</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="update-modal" style="display: none; z-index: 9999;">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2 style="margin: 0; color: var(--text-color, #fff); text-align: center;" data-i18n="update_available">
+                    ⬆️ Доступно
+                    обновление</h2>
+            </div>
+
+            <div style="padding: 25px; text-align: center;">
+                <div
+                    style="background: rgba(3, 53, 252, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 4px solid #0335fc;">
+                    <div style="font-size: 13px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); margin-bottom: 8px;"
+                        data-i18n="current_version">Текущая версия:
+                    </div>
+                    <div style="font-size: 16px; font-weight: 600; color: var(--text-color, #fff);"
+                        id="update-current-version">
+                        0.2.0</div>
+
+                    <div style="font-size: 13px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); margin-top: 12px; margin-bottom: 8px;"
+                        data-i18n="new_version">
+                        Новая версия:</div>
+                    <div style="font-size: 18px; font-weight: 700; color: #0335fc;" id="update-latest-version">
+                        0.2.1
+                    </div>
+                </div>
+
+                <div
+                    style="background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); padding: 12px; border-radius: 8px; margin: 15px 0; max-height: 150px; overflow-y: auto;">
+                    <div style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.8); text-align: left; line-height: 1.6;"
+                        id="update-release-notes" data-i18n="loading_release_notes">
+                        Загрузка информации об обновлении...
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="closeModal('update-modal')" style="width: 100%;"
+                        data-i18n="later">Позже</button>
+                    <button class="btn btn-primary" onclick="downloadUpdate()" style="width: 100%;"
+                        data-i18n="download">Скачать</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="exe-update-modal" style="display: none; z-index: 9999;">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2 style="margin: 0; color: var(--text-color, #fff); text-align: center;" data-i18n="launcher_update">
+                    🔄
+                    Обновление
+                    лаунчера</h2>
+            </div>
+
+            <div style="padding: 25px; text-align: center;">
+                <div
+                    style="background: rgba(3, 53, 252, 0.1); padding: 20px; border-radius: 12px; margin: 15px 0; border-left: 4px solid #0335fc;">
+                    <div style="font-size: 13px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); margin-bottom: 8px;"
+                        data-i18n="new_exe_update">Доступно новое
+                        обновление exe</div>
+                    <div style="font-size: 14px; color: var(--text-color, #fff); margin-top: 10px;"><span
+                            data-i18n="size">Размер:</span>
+                        <span id="exe-update-size" style="color: #0335fc; font-weight: 600;">загрузка...</span>
+                    </div>
+                </div>
+
+                <div id="exe-update-progress" style="display: none; margin: 20px 0;">
+                    <div
+                        style="width: 100%; height: 8px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 4px; overflow: hidden;">
+                        <div id="exe-update-progress-bar"
+                            style="width: 0%; height: 100%; background: linear-gradient(90deg, #0335fc, #0256ff); transition: width 0.3s ease;">
+                        </div>
+                    </div>
+                    <div style="margin-top: 8px; font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.6);"
+                        id="exe-update-status" data-i18n="downloading">
+                        Скачивание...</div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px;"
+                    id="exe-update-buttons">
+                    <button class="btn btn-secondary" onclick="closeModal('exe-update-modal')" style="width: 100%;"
+                        data-i18n="later">Позже</button>
+                    <button class="btn btn-primary" onclick="downloadExeUpdate()" style="width: 100%;"
+                        data-i18n="update">Обновить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settings-modal" style="max-height: 90vh; overflow-y: auto;">
+        <div class="modal-content" style="max-width: 800px; max-height: 90vh; overflow-y: auto;">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="settings_title">⚙️ Настройки</div>
+                <button class="close-btn" onclick="closeModal('settings-modal')">×</button>
+            </div>
+
+            <div style="overflow-y: auto; max-height: 80vh;">
+                <div class="settings-container">
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="general_settings">Общие настройки</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="minecraft_folder">Папка Minecraft</label>
+                                <input type="text" id="settings-modal-minecraft-dir" placeholder="Путь к .minecraft">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="gpu_mode">Режим графики</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select" id="settings-modal-gpu-mode-select">
+                                        <div class="custom-select-trigger">
+                                            <span>Авто</span>
+                                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="custom-option selected" data-value="auto" data-i18n="auto">Авто
+                                            </div>
+                                            <div class="custom-option" data-value="gpu" data-i18n="gpu">
+                                                Видеокарта (GPU)
+                                            </div>
+                                            <div class="custom-option" data-value="cpu" data-i18n="cpu">
+                                                Процессор (CPU)
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="ram_memory">Оперативная Память (ОЗУ)
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label" data-i18n="allocate_memory">Выделить памяти для
+                                игры</label>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                <input type="range" id="settings-modal-global-ram" min="512" max="16384" step="512"
+                                    value="4096"
+                                    style="flex: 1; height: 8px; border-radius: 4px; background: linear-gradient(to right, #0335fc, #0335fc); outline: none; cursor: pointer; -webkit-appearance: none; appearance: none;">
+                                <span id="settings-modal-global-ram-display"
+                                    style="color: #0335fc; font-weight: 700; min-width: 60px; text-align: right; font-size: 15px;">4
+                                    GB</span>
+                            </div>
+                            <div style="font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); margin-top: 10px; line-height: 1.4;"
+                                data-i18n="ram_hint">
+                                💡 Размер памяти для каждого запуска. Рекомендуется 4-8 ГБ.</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="java_settings">Настройки Java</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="java_path">Путь к Java</label>
+                                <input type="text" id="settings-modal-java-path" placeholder="Путь к java.exe">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="jvm_args">Аргументы JVM</label>
+                                <input type="text" id="settings-modal-jvm-args" placeholder="-Xmx4G -Xms4G">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="appearance">Внешний вид</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="language">Язык</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select" id="settings-modal-language-select">
+                                        <div class="custom-select-trigger">
+                                            <span>Русский</span>
+                                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="custom-option selected" data-value="ru">Русский</div>
+                                            <div class="custom-option" data-value="en">English</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="accent_color">Акцентный цвет</label>
+                                <div style="display: flex; gap: 10px; align-items: center;">
+                                    <input type="color" id="settings-modal-accent-color" value="#0335fc"
+                                        onchange="previewAccentColor(this.value)">
+                                    <button class="btn btn-secondary" onclick="resetAccentColor()"
+                                        style="padding: 8px 12px; font-size: 12px;" data-i18n="reset">Сброс</button>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="overlay">Оверлей в игре</label>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <input type="checkbox" id="settings-modal-overlay-enabled" checked
+                                        style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                                    <span style="color: #aaa; font-size: 12px;" data-i18n="overlay_hint">Показывать
+                                        пинг, сессию и ник поверх
+                                        окна игры</span>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="theme">Тема</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select" id="settings-modal-theme-select">
+                                        <div class="custom-select-trigger">
+                                            <span>Тёмная</span>
+                                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="custom-option selected" data-value="dark">Тёмная</div>
+                                            <div class="custom-option" data-value="light">Светлая</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="version_settings">Настройки Версий</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="show_snapshots">Показывать Снапшоты
+                                    (Snapshots)</label>
+                                <input type="checkbox" id="settings-show-snapshots"
+                                    style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="show_beta">Показывать Старые Бета (Old
+                                    Beta)</label>
+                                <input type="checkbox" id="settings-show-beta"
+                                    style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="show_alpha">Показывать Старые Альфа (Old
+                                    Alpha)</label>
+                                <input type="checkbox" id="settings-show-alpha"
+                                    style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="game_window">Окно Игры</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="fullscreen">Форсированный полноэкранный
+                                    режим</label>
+                                <input type="checkbox" id="settings-fullscreen"
+                                    style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                            </div>
+                            <div class="input-group" style="display: flex; gap: 10px;">
+                                <div style="flex: 1;">
+                                    <label class="input-label" data-i18n="window_width">Ширина окна</label>
+                                    <input type="number" id="settings-window-width" placeholder="854">
+                                </div>
+                                <div style="flex: 1;">
+                                    <label class="input-label" data-i18n="window_height">Высота окна</label>
+                                    <input type="number" id="settings-window-height" placeholder="480">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="advanced_ui">Продвинутый Интерфейс</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="font_family">Шрифт лаунчера</label>
+                                <select id="settings-font-family"
+                                    style="width: 100%; padding: 10px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.05); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff);">
+                                    <option value="Inter">Inter (По умолчанию)</option>
+                                    <option value="Roboto">Roboto</option>
+                                    <option value="Outfit">Outfit</option>
+                                    <option value="monospace">Monospace</option>
+                                    <option value="sans-serif">Без засечек (System)</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="border_radius"
+                                    style="display:flex; justify-content:space-between;"><span>Скругление объектов
+                                        (px)</span> <span id="border-radius-val">12</span></label>
+                                <input type="range" id="settings-border-radius" min="0" max="24" value="12" step="1"
+                                    class="slider">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="launcher_background">Фон Лаунчера</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="bg_blur"
+                                    style="display:flex; justify-content:space-between;"><span>Размытие фона (px)</span>
+                                    <span id="bg-blur-val">0</span></label>
+                                <input type="range" id="settings-bg-blur" min="0" max="40" value="0" step="1"
+                                    class="slider">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="bg_darken"
+                                    style="display:flex; justify-content:space-between;"><span>Затемнение фона
+                                        (%)</span> <span id="bg-darken-val">20</span></label>
+                                <input type="range" id="settings-bg-darken" min="0" max="100" value="20" step="1"
+                                    class="slider">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="background_type">Тип фона</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select" id="settings-modal-background-type-select"
+                                        data-onChange="onBackgroundTypeChange">
+                                        <div class="custom-select-trigger">
+                                            <span>Цвет</span>
+                                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="custom-option selected" data-value="color" data-i18n="color">
+                                                Цвет</div>
+                                            <div class="custom-option" data-value="image" data-i18n="image">
+                                                Изображение
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="bg_color">Цвет фона</label>
+                                <input type="color" id="settings-modal-background-color" value="#000000">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="advanced_system">Системные / Логи</div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="save_logs">Сохранять логи запуска в папке
+                                    лаунчера</label>
+                                <input type="checkbox" id="settings-save-logs"
+                                    style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                            </div>
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="hide_launch_cmd">Скрывать команду запуска в логах
+                                    (для чистоты)</label>
+                                <input type="checkbox" id="settings-hide-launch-command" checked
+                                    style="width: 18px; height: 18px; accent-color: var(--accent-color, #0335fc); cursor: pointer;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-section-title" data-i18n="update_maintenance">Обновление и обслуживание
+                        </div>
+                        <div class="settings-grid">
+                            <div class="input-group">
+                                <label class="input-label" data-i18n="update_channel">Канал обновлений</label>
+                                <div class="custom-select-wrapper">
+                                    <div class="custom-select" id="settings-modal-update-channel-select"
+                                        data-onChange="onUpdateChannelChange">
+                                        <div class="custom-select-trigger">
+                                            <span>Стабильный</span>
+                                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2">
+                                                <polyline points="6 9 12 15 18 9" />
+                                            </svg>
+                                        </div>
+                                        <div class="custom-options">
+                                            <div class="custom-option selected" data-value="stable"
+                                                data-i18n="channel_stable">Стабильный</div>
+                                            <div class="custom-option" data-value="beta" data-i18n="channel_beta">Бета
+                                                (Тестирование)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group" style="grid-column: 1 / -1;">
+                                <label class="input-label" data-i18n="actions">Действия</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                                    <button class="btn btn-secondary" onclick="repairLauncherFiles()">🛠 <span
+                                            data-i18n="repair">Починить</span></button>
+                                    <button class="btn btn-primary" onclick="checkForUpdates()">🔄 <span
+                                            data-i18n="update">Обновить</span></button>
+                                    <button class="btn btn-danger" onclick="showResetDialog()">🗑 <span
+                                            data-i18n="reset">Сброс</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; padding: 20px 0;">
+                        <button class="btn btn-primary" onclick="saveSettingsFromModal()" style="flex: 1;">✓
+                            <span data-i18n="save">Сохранить</span></button>
+                        <button class="btn btn-secondary" onclick="closeModal('settings-modal')" style="flex: 1;">✕
+                            <span data-i18n="cancel">Отменить</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="resize-handle"></div>
+
+    <div class="modal-overlay" id="about-modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="about_title">О лаунчере</div>
+                <button class="close-btn" onclick="closeModal('about-modal')">×</button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div style="font-size: 48px; margin-bottom: 10px;">▲</div>
+                <h2 style="margin: 0 0 5px 0; color: var(--text-color, #fff);">FlowCross Launcher</h2>
+                <div
+                    style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.5); font-size: 14px; margin-bottom: 20px;">
+                    Version <span id="about-version">0.2.0</span>
+                    <div style="margin-top: 4px; font-size: 13px; opacity: 0.7;">Architecture: JavaScript</div>
+                </div>
+
+                <p style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); line-height: 1.6; margin-bottom: 20px;"
+                    data-i18n="about_description">
+                    Современный, быстрый и красивый лаунчер для Minecraft.
+                    Разработан с любовью для игроков.
+                </p>
+
+                <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                    <button class="btn btn-secondary" onclick="openUrl('https://github.com/FlowCross')"
+                        style="display: flex; gap: 8px; align-items: center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.378.203 2.397.1 2.65.64.699 1.028 1.597 1.028 2.688 0 3.848-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+                        </svg>
+                        GitHub
+                    </button>
+                    <button class="btn btn-secondary" onclick="openUrl('https://discord.gg/flowcross')"
+                        style="display: flex; gap: 8px; align-items: center;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
+                        </svg>
+                        Discord
+                    </button>
+                </div>
+
+                <div
+                    style="margin-top: 25px; border-top: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); padding-top: 15px; font-size: 12px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.3);">
+                    &copy; 2025-2026 FlowCross Team. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="url-prompt-modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="modal-header">
+                <div class="modal-title" data-i18n="bg_url">По ссылке</div>
+                <button class="close-btn" onclick="closeModal('url-prompt-modal')">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.7); font-size: 13px; margin: 0 0 15px 0"
+                    data-i18n="bg_url_prompt">
+                    Введите прямую ссылку на изображение или видео (http/https):</p>
+                <input type="text" id="bg-url-input" placeholder="http://..."
+                    style="width: 100%; padding: 10px 12px; background: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.04); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); border-radius: 8px; color: var(--text-color, #fff); font-size: 14px; margin-bottom: 20px;">
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="applyPromptBackground()" style="flex: 1;">✓
+                        <span data-i18n="save">Сохранить</span></button>
+                    <button class="btn btn-secondary" onclick="closeModal('url-prompt-modal')" style="flex: 1;">✕
+                        <span data-i18n="cancel">Отменить</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../src/translations.js"></script>
+    <script src="../src/renderer.js"></script>
+    <div id="changelog-details-modal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; opacity: 0; transition: opacity 0.3s;">
+        <div style="position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);"
+            onclick="closeChangelogDetails()"></div>
+        <div style="position: absolute; inset: 0; overflow-y: auto; padding: 40px 20px; pointer-events: none;">
+            <div style="pointer-events: auto; max-width: 900px; margin: 0 auto; background: var(--card-color, #0e0e0e); border-radius: 16px; border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.1); overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: translateY(20px); transition: transform 0.3s;"
+                id="changelog-modal-content">
+                <div id="changelog-details-banner"
+                    style="height: 360px; background-size: cover; background-position: center; position: relative;">
+                    <div
+                        style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(14,14,14,1) 100%);">
+                    </div>
+                    <button onclick="closeChangelogDetails()"
+                        style="position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 1px solid rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.2); color: var(--text-color, #fff); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; backdrop-filter: blur(5px);">
+                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M18 6L6 18M6 6l12 12" />
+                        </svg>
+                    </button>
+                    <div
+                        style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 40px; padding-bottom: 20px;">
+                        <div id="changelog-details-meta" style="display: flex; gap: 10px; margin-bottom: 12px;">
+                        </div>
+                        <h1 id="changelog-details-title"
+                            style="margin: 0; font-size: 36px; font-weight: 700; line-height: 1.2; text-shadow: 0 4px 20px rgba(0,0,0,0.8); color: var(--text-color, #fff);">
+                        </h1>
+                    </div>
+                </div>
+                <div style="padding: 40px; padding-top: 10px; position: relative; z-index: 2;">
+                    <div id="changelog-details-version"
+                        style="font-size: 16px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.6); margin-bottom: 30px; font-weight: 500; font-family: monospace;">
+                    </div>
+
+                    <div id="changelog-details-loading"
+                        style="display: none; text-align: center; padding: 40px; color: rgba(var(--text-r, 255), var(--text-g, 255), var(--text-b, 255), 0.4);">
+                        <svg style="animation: spin 1s linear infinite; width: 24px; height: 24px;" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83" />
+                        </svg>
+                        <div style="margin-top: 10px;" data-i18n="loading">Загрузка...</div>
+                    </div>
+
+                    <div id="changelog-details-content"
+                        style="font-size: 16px; line-height: 1.7; color: #d0d0d0; min-height: 200px;"></div>
+                </div>
+            </div>
+            <div style="height: 40px;"></div>
+        </div>
+    </div>
+    <div class="command-palette-overlay" id="command-palette-overlay" onclick="closeCommandPalette(event)">
+        <div class="command-palette">
+            <div class="cp-header">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    style="width: 20px; height: 20px; opacity: 0.5;">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input type="text" class="cp-input" id="cp-input" placeholder="Поиск функций..."
+                    data-i18n-placeholder="search_functions" autocomplete="off">
+            </div>
+            <div class="cp-results" id="cp-results">
+            </div>
+        </div>
+    </div>
+    <div id="update-banner">
+        <div id="update-banner-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20">
+                <path d="M12 16V8M12 8l-3 3M12 8l3 3" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M3 16.5A4.5 4.5 0 007.5 21h9a4.5 4.5 0 000-9h-.5A6 6 0 003 16.5z" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div id="update-banner-text">
+            <span id="update-banner-title">Доступно обновление</span>
+            <span id="update-banner-sub">Новая версия FlowCross готова к загрузке</span>
+        </div>
+        <div id="update-banner-progress-wrap">
+            <div id="update-banner-progress-bar"></div>
+        </div>
+        <div id="update-banner-actions">
+            <button id="update-btn-later">Позже</button>
+            <button id="update-btn-install">Установить</button>
+        </div>
+    </div>
+
+    <div id="notify-suggest-banner"
+        style="display:none; position:fixed; bottom:80px; right:20px; background:rgba(10,10,14,0.96); border:1px solid rgba(var(--text-r,255),var(--text-g,255),var(--text-b,255),0.1); border-radius:16px; padding:16px 20px; z-index:9998; width:340px; box-shadow:0 16px 48px rgba(0,0,0,0.7); backdrop-filter:blur(20px);">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div
+                style="width:36px;height:36px;border-radius:10px;background:rgba(var(--accent-r,3),var(--accent-g,53),var(--accent-b,252),0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-light,#638aff)"
+                    stroke-width="1.8" stroke-linecap="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+                </svg>
+            </div>
+            <div style="flex:1;">
+                <div style="font-size:13px;font-weight:700;color:var(--text-color,#fff);margin-bottom:2px;">Включить
+                    уведомления?</div>
+                <div style="font-size:12px;color:rgba(var(--text-r,255),var(--text-g,255),var(--text-b,255),0.5);">
+                    Получайте уведомления об успехе или ошибке загрузки версий</div>
+            </div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+            <button onclick="enableNotifyAndClose()"
+                style="flex:1;padding:8px 14px;background:var(--accent-color,#0335fc);border:none;border-radius:9px;color:#fff;font-size:12px;font-weight:600;cursor:pointer;">Включить</button>
+            <button onclick="dismissNotifySuggest(false)"
+                style="flex:1;padding:8px 14px;background:rgba(var(--text-r,255),var(--text-g,255),var(--text-b,255),0.06);border:1px solid rgba(var(--text-r,255),var(--text-g,255),var(--text-b,255),0.1);border-radius:9px;color:rgba(var(--text-r,255),var(--text-g,255),var(--text-b,255),0.6);font-size:12px;cursor:pointer;">Позже</button>
+        </div>
+        <label
+            style="display:flex;align-items:center;gap:7px;cursor:pointer;font-size:11px;color:rgba(var(--text-r,255),var(--text-g,255),var(--text-b,255),0.35);">
+            <input type="checkbox" id="notify-suggest-no-more" style="cursor:pointer;"> Не показывать снова
+        </label>
+    </div>
+
+    <script src="../node_modules/skinview3d/bundles/skinview3d.bundle.js"></script>
+    <script src="../src/translations.js"></script>
+    <script src="../src/renderer.js"></script>
+
+    <div class="modal-overlay" id="mod-version-selector-modal">
+        <div class="modal-content" style="max-width: 550px;">
+            <div class="modal-header">
+                <div class="modal-title" id="mod-version-modal-title">Выбор версии мода</div>
+                <button class="close-btn" onclick="closeModal('mod-version-selector-modal')">×</button>
+            </div>
+            <div style="padding: 0 4px;" id="mod-version-auto-container"></div>
+            <div class="mod-version-list" id="mod-version-list"></div>
+        </div>
+    </div>
+
+    <div class="version-picker-portal" id="version-picker-portal">
+        <div class="vpm-loader-tabs">
+            <button class="vpm-tab active" data-loader="none">Vanilla</button>
+            <button class="vpm-tab" data-loader="fabric">Fabric</button>
+            <button class="vpm-tab" data-loader="forge">Forge</button>
+            <button class="vpm-tab" data-loader="neoforge">NeoForge</button>
+            <button class="vpm-tab" data-loader="quilt">Quilt</button>
+            <button class="vpm-tab" data-loader="flowcross">FlowCross</button>
+        </div>
+        <div class="vpm-list" id="vpm-list"></div>
+    </div>
+</body>
+
+</html>

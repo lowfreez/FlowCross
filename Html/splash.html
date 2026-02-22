@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowCross Launcher</title>
+    
+    <link rel="stylesheet" href="splash.css">
+</head>
+
+<body>
+    <div class="logo-container">
+        <div class="logo-triangle"></div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <script>
+        const progressBar = document.getElementById('progressBar');
+        window.launcher.onSplashProgress((progress) => {
+            if (progressBar) {
+                progressBar.style.width = (progress * 100) + '%';
+            }
+        });
+    </script>
+</body>
+
+</html>

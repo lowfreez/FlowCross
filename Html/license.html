@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowCross — Активация</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="license.css">
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow"></div>
+
+<div class="title-bar">
+    <div class="window-controls">
+        <button class="win-btn close" id="closeBtn" title="Закрыть">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+</div>
+
+<div class="main">
+    <div id="activationView">
+        <div class="logo-wrap">
+            <div class="logo-icon">
+                <div class="logo-triangle"></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+                <span class="logo-title">FlowCross</span>
+                <span class="logo-badge">Pro</span>
+            </div>
+            <p class="logo-sub">Введите ключ продукта для активации лаунчера.<br>Ключ привязывается к вашей машине.</p>
+        </div>
+
+        <div class="key-form">
+            <div class="key-label">Ключ продукта</div>
+            <div class="key-input-wrap">
+                <input
+                    type="text"
+                    class="key-input"
+                    id="keyInput"
+                    placeholder="XXXXX-XXXXX-XXXXX-XXXXX-XXXXX"
+                    maxlength="29"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+            </div>
+            <div class="status-msg" id="statusMsg">
+                <div class="status-dot"></div>
+                <span id="statusText"></span>
+            </div>
+            <button class="activate-btn" id="activateBtn">
+                <span class="btn-text">Активировать</span>
+                <div class="btn-spinner"></div>
+            </button>
+        </div>
+
+        <p class="footer-info">
+            Ключ продукта привязывается к железу.<br>Сброс — только через тех. поддержку.
+        </p>
+    </div>
+
+    <div class="success-screen" id="successView">
+        <div class="success-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                <path d="M6 16L13 23L26 9" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="success-title">Активировано!</div>
+        <div class="success-sub">FlowCross Pro успешно активирован.<br>Лаунчер запустится автоматически.</div>
+        <div class="countdown-bar-wrap">
+            <div class="countdown-bar" id="countdownBar"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const keyInput = document.getElementById('keyInput');
+    const activateBtn = document.getElementById('activateBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    const statusText = document.getElementById('statusText');
+    const activationView = document.getElementById('activationView');
+    const successView = document.getElementById('successView');
+    const countdownBar = document.getElementById('countdownBar');
+
+    document.getElementById('closeBtn').addEventListener('click', () => {
+        window.licenseApi.close();
+    });
+
+    keyInput.addEventListener('input', (e) => {
+        let val = e.target.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        let formatted = '';
+        for (let i = 0; i < val.length && i < 25; i++) {
+            if (i > 0 && i % 5 === 0) formatted += '-';
+            formatted += val[i];
+        }
+        e.target.value = formatted;
+        keyInput.classList.remove('error', 'success');
+        hideStatus();
+    });
+
+    keyInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') activateBtn.click();
+    });
+
+    function showStatus(type, text) {
+        statusMsg.className = `status-msg ${type} visible`;
+        statusText.textContent = text;
+    }
+
+    function hideStatus() {
+        statusMsg.className = 'status-msg';
+    }
+
+    function setLoading(state) {
+        activateBtn.disabled = state;
+        activateBtn.classList.toggle('loading', state);
+        keyInput.disabled = state;
+    }
+
+    activateBtn.addEventListener('click', async () => {
+        const key = keyInput.value.trim();
+        if (key.length !== 29) {
+            keyInput.classList.add('error');
+            showStatus('error', 'Неверный формат ключа');
+            return;
+        }
+
+        setLoading(true);
+        showStatus('loading', 'Проверка ключа...');
+
+        try {
+            const result = await window.licenseApi.activate(key);
+
+            if (result.success) {
+                keyInput.classList.add('success');
+                showStatus('success', 'Ключ принят');
+
+                setTimeout(() => {
+                    activationView.style.display = 'none';
+                    successView.classList.add('visible');
+
+                    countdownBar.style.transition = 'width 2.5s linear';
+                    requestAnimationFrame(() => {
+                        countdownBar.style.width = '0%';
+                    });
+
+                    setTimeout(() => {
+                        window.licenseApi.proceed();
+                    }, 2700);
+                }, 600);
+            } else {
+                setLoading(false);
+                keyInput.classList.add('error');
+
+                const errors = {
+                    'invalid_key': 'Ключ не найден',
+                    'revoked': 'Ключ отозван',
+                    'expired': 'Срок действия истёк',
+                    'machine_mismatch': 'Ключ привязан к другой машине'
+                };
+                showStatus('error', errors[result.error] || 'Ошибка активации');
+            }
+        } catch (e) {
+            setLoading(false);
+            keyInput.classList.add('error');
+            showStatus('error', 'Нет подключения к серверу');
+        }
+    });
+</script>
+</body>
+</html>

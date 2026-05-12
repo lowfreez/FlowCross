@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="https://meta.elytra.ltd/storage/v1/object/public/FlowCross/assets/icon.png" alt="FlowCross Logo" width="256" height="256">
+  <img src="https://meta.elytra.ltd/storage/v1/object/public/FlowCross/assets/icon.png" alt="FlowCross Logo" width="126" height="126">
 
   # FlowCross Launcher
 

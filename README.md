@@ -1,11 +1,11 @@
 <div align="center">
 
-  <img src="https://meta.elytra.ltd/storage/v1/object/public/FlowCross/assets/icon.png" alt="FlowCross Logo" width="128" height="128">
+  <img src="https://meta.elytra.ltd/storage/v1/object/public/FlowCross/assets/icon.png" alt="FlowCross Logo" width="256" height="256">
 
   # FlowCross Launcher
 
-  **FlowCross** — это современный, быстрый и интуитивно понятный лаунчер для Minecraft.  
-  Ориентирован на производительность, чистоту интерфейса и легкость управления игровыми процессами.
+  **FlowCross** - это современный, почти быстрый и интуитивно понятный лаунчер для Minecraft.  
+  Ориентирован на удобство, чистоту интерфейса и легкость управления игровыми процессами.
 
   [![GitHub release](https://img.shields.io/github/v/release/lowfreez/FlowCross?style=for-the-badge&color=7C3AED)](https://github.com/lowfreez/FlowCross/releases)
   [![GitHub stars](https://img.shields.io/github/stars/lowfreez/FlowCross?style=for-the-badge&color=F59E0B)](https://github.com/lowfreez/FlowCross/stargazers)
@@ -67,7 +67,7 @@ FlowCross построен на базе самых современных ве�
     npm run build
     ```
 
-p.s Код предоставлен не полностью, некоторые модули отвечающие за бд отсутствуют в мерах безопасности крч вы знаете
+p.s ***Код предоставлен не полностью, некоторые модули отвечающие за бд отсутствуют в мерах безопасности крч вы знаете***
 
 ---
 

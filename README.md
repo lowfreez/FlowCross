@@ -2,8 +2,6 @@
 
 <img src="https://pmqpixsjrevmngxvearu.supabase.co/storage/v1/object/public/api/flowcrossbanner.png" alt="FlowCross Logo" width="2048" height="253">
 
-# FlowCross Launcher
-
 **FlowCross** - это современный, быстрый и интуитивно понятный лаунчер для Minecraft.
 Ориентирован на удобство, чистоту интерфейса и легкость управления игровыми процессами.
 

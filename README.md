@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://supabase.com/dashboard/project/pmqpixsjrevmngxvearu/storage/files/buckets/api?preview=flowcrossbanner.png" alt="FlowCross Logo" width="2048" height="253">
+<img src="https://pmqpixsjrevmngxvearu.supabase.co/storage/v1/object/public/api/flowcrossbanner.png" alt="FlowCross Logo" width="2048" height="253">
 
 # FlowCross Launcher
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="[https://meta.elytra.ltd/storage/v1/object/public/FlowCross/assets/icon.png](https://supabase.com/dashboard/project/pmqpixsjrevmngxvearu/storage/files/buckets/api?preview=flowcrossbanner.png)" alt="FlowCross Logo" width="2048" height="253">
+  <img src="[https://supabase.com/dashboard/project/pmqpixsjrevmngxvearu/storage/files/buckets/api?preview=flowcrossbanner.png](https://supabase.com/dashboard/project/pmqpixsjrevmngxvearu/storage/files/buckets/api?preview=flowcrossbanner.png)" alt="FlowCross Logo" width="2048" height="253">
 
   # FlowCross Launcher
 
@@ -17,3 +17,5 @@
 ---
 
 Этот репозиторий архивирован, [новый репо](https://github.com/lowfreez/FlowCross-Windows/)
+
+
